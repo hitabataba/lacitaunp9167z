@@ -48,7 +48,7 @@ function checkImageFile($file_name){
 ?>
 
 <form action="<?php echo($_SERVER["REQUEST_URI"]); ?>" method="post" enctype="multipart/form-data">
-  画像ファイル：<br />
+  画像ファイル(jpg/png/gif)：<br />
   <input type="file" name="imgfile" size="30" /><br />
   <input type="submit" value="画像アップロード" />
 </form>
