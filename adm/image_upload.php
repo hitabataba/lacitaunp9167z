@@ -48,7 +48,7 @@ function checkImageFile($file_name){
 ?>
 
 <form action="<?php echo($_SERVER["REQUEST_URI"]); ?>" method="post" enctype="multipart/form-data">
-  CSVファイル：<br />
+  画像ファイル：<br />
   <input type="file" name="imgfile" size="30" /><br />
   <input type="submit" value="画像アップロード" />
 </form>
@@ -75,9 +75,6 @@ foreach($err_msg as $em){
 <ul style="color:#0094ff">
 <?php
 if($cau_msg){
-  if(!$err_msg){
-    echo("notice:これらがあってもシナリオデータは登録されます。");
-  }
   foreach($cau_msg as $cm){
     echo("<li>");
     echo($cm);
