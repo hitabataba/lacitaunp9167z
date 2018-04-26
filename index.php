@@ -455,7 +455,7 @@ function updateUserQuestionnaire($userId, $quest, $answer) {
     $sth->execute(array($userId,json_encode($answer_data)));
 
   }else{
-    $answer_data = json_decode($row['answer']);
+    $answer_data = json_decode($row['answer'],true);
     $answer_data[$quest] = $answer;
 
     $sql = 'update ' . TABLE_NAME_QUESTIONNAIRE . ' set answer = ? , update_timestamp = now() where ? = pgp_sym_decrypt(userid, \'' . getenv('DB_ENCRYPT_PASS') . '\')';
