@@ -465,11 +465,11 @@ error_log($row['answer']);
 foreach($answer_data as $q => $a){
 error_log($q ."|". $a);
 }
-
+error_log(json_encode($answer_data));
 
     $sql = 'update ' . TABLE_NAME_QUESTIONNAIRE . ' set answer = ? , update_timestamp = now() where ? = pgp_sym_decrypt(userid, \'' . getenv('DB_ENCRYPT_PASS') . '\')';
     $sth = $dbh->prepare($sql);
-    $sth->execute(array($userId, json_encode($answer_data)));
+    $sth->execute(array(json_encode($answer_data), $userId));
   }
 }
 
