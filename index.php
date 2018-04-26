@@ -460,7 +460,7 @@ function updateUserQuestionnaire($userId, $quest, $answer) {
 
     $sql = 'update ' . TABLE_NAME_QUESTIONNAIRE . ' set answer = ? , update_timestamp = now() where ? = pgp_sym_decrypt(userid, \'' . getenv('DB_ENCRYPT_PASS') . '\')';
     $sth = $dbh->prepare($sql);
-    $sth->execute(array($progress, json_encode($answer_data)));
+    $sth->execute(array($userId, json_encode($answer_data)));
   }
 }
 
