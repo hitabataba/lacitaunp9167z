@@ -136,10 +136,16 @@ foreach ($events as $event) {
 //選択肢入力
   }else if (($event instanceof \LINE\LINEBot\Event\PostbackEvent)) {
 //    $step = $event->getPostbackData();
-    $steps = explode('$', $event->getPostbackData(), 2);
+    $steps = explode('$', $event->getPostbackData(), 3);
     $past_step = $steps[0];
     $step = $steps[1];
+    $q_rec = ($steps[2] != "") ? $steps[2] : false;
+
+    if($q_rec != false){
+      updateUserQuestionnaire($event->getUserId(), $past_step, $q_rec);
+    }
     error_log('Log--'.$step);
+
     switch($past_step){
     case 'ResetYes':
       $progress[0] ="WELCOME"; //進捗を初期状態に
@@ -325,22 +331,27 @@ function replyMultiMessage($bot, $replyToken, $msgs, $profile) {
       $msg = new LINE\LINEBot\MessageBuilder\AudioMessageBuilder(AUDIO_DIR.$value['audiofile'],$value['audioduration']);
       break;
     case "button":
+    case "button_q":
       $postback = array();
       if(trim($value['button_text_1']) && trim($value['button_flg_1'])){
+        if($value['format'] == "button_q"){$q_txt = $value['button_text_1'];}else{$q_txt = ""}
         $value['button_text_1'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_1']);
-        $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_1'],$value['label']."$".$value['button_flg_1']);
+        $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_1'],$value['label']."$".$value['button_flg_1']."$".$q_txt);
       }
       if(trim($value['button_text_2']) && trim($value['button_flg_2'])){
+        if($value['format'] == "button_q"){$q_txt = $value['button_text_2'];}else{$q_txt = ""}
         $value['button_text_2'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_2']);
-        $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_2'],$value['label']."$".$value['button_flg_2']);
+        $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_2'],$value['label']."$".$value['button_flg_2']."$".$q_txt);
       }
       if(trim($value['button_text_3']) && trim($value['button_flg_3'])){
+        if($value['format'] == "button_q"){$q_txt = $value['button_text_3'];}else{$q_txt = ""}
         $value['button_text_3'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_3']);
-        $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_3'],$value['label']."$".$value['button_flg_3']);
+        $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_3'],$value['label']."$".$value['button_flg_3']."$".$q_txt);
       }
       if(trim($value['button_text_4']) && trim($value['button_flg_4'])){
+        if($value['format'] == "button_q"){$q_txt = $value['button_text_4'];}else{$q_txt = ""}
         $value['button_text_4'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_4']);
-        $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_4'],$value['label']."$".$value['button_flg_4']);
+        $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_4'],$value['label']."$".$value['button_flg_4']."$".$q_txt);
       }
 //      foreach($value['button'] as $key => $val) {
 //        $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($key,$val);
@@ -424,6 +435,33 @@ function updateUser($userId, $progress) {
   $sth = $dbh->prepare($sql);
   $sth->execute(array($progress, $userId));
 }
+
+// アンケート情報を更新
+function updateUserQuestionnaire($userId, $quest, $answer) {
+  $answer_data = array();
+
+  $dbh = dbConnection::getConnection();
+
+  $sql = 'select answer from ' . TABLE_NAME_QUESTIONNAIRE . ' where ? = pgp_sym_decrypt(userid, \'' . getenv('DB_ENCRYPT_PASS') . '\')';
+  $sth = $dbh->prepare($sql);
+  $sth->execute(array($userId));
+  // レコードが存在しなければNULL
+  if (!($row = $sth->fetch())) {
+    $answer_data = array($quest => $answer);
+    $sql = 'insert into '. TABLE_NAME_QUESTIONNAIRE .' (userid,answer) values (pgp_sym_encrypt(?, \'' . getenv('DB_ENCRYPT_PASS') . '\'), ?) ';
+    $sth = $dbh->prepare($sql);
+    $sth->execute(array($userId,$answer_data));
+
+  }else{
+    $answer_data = json_decode($row['answer']);
+    $answer_data[$quest] = $answer;
+
+    $sql = 'update ' . TABLE_NAME_QUESTIONNAIRE . ' set answer = ? , update_timestamp = now() where ? = pgp_sym_decrypt(userid, \'' . getenv('DB_ENCRYPT_PASS') . '\')';
+    $sth = $dbh->prepare($sql);
+    $sth->execute(array($progress, $answer_data));
+  }
+}
+
 
 
 // ユーザーIDを元にデータベースから進捗情報を取得

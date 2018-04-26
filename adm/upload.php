@@ -94,46 +94,31 @@ if($data){
       if($t['format']=="image" && is_null($t['img_name'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがimgですが、画像ファイル名がありません。";
       }
-      if($t['format']=="button" && is_null($t['button_text_1'])){
+      if( ($t['format']=="button" || $t['format']=="button_q") && is_null($t['button_text_1'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがbuttonですが、1つ目のボタンテキスト button_text_1 がありません。";
       }
-      if($t['format']=="button" && is_null($t['button_flg_1'])){
+      if( ($t['format']=="button" || $t['format']=="button_q") && is_null($t['button_flg_1'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがbuttonですが、1つ目のボタンID button_flg_1 がありません。";
       }
-      if($t['format']=="branch" && (is_null($t['button_text_1']) || trim($t['button_text_1'])=="")){
-        $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがbranchですが、1つ目の自由回答テキスト button_text_1 がありません。";
-      }
-      if($t['format']=="branch" && is_null($t['button_flg_1'])){
-        $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがbranchですが、1つ目の飛び先ID button_flg_1 がありません。";
-      }
-      if($t['format']=="button" && (is_null($t['button_text_2']) xor is_null($t['button_flg_2']))){
+      if( ($t['format']=="button" || $t['format']=="button_q") && (is_null($t['button_text_2']) xor is_null($t['button_flg_2']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→2つ目のボタンテキスト button_text_2 かボタンID button_flg_2 かのどちらかがありません。";
       }
-      if($t['format']=="branch" && (is_null($t['button_text_2']) xor (is_null($t['button_flg_2']) || trim($t['button_flg_2'])=="" ))){
-        $err_msg[] = "label:".$t['label']." ".$lc."行目→2つ目の自由回答テキスト button_text_2 か飛び先ID button_flg_2 かのどちらかがありません。";
-      }
-      if($t['format']=="button" && (is_null($t['button_text_3']) xor is_null($t['button_flg_3']))){
+      if( ($t['format']=="button" || $t['format']=="button_q") && (is_null($t['button_text_3']) xor is_null($t['button_flg_3']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→3つ目のボタンテキスト button_text_3 かボタンID button_flg_3 かのどちらかがありません。";
       }
-      if($t['format']=="branch" && (is_null($t['button_text_3']) xor (is_null($t['button_flg_3']) || trim($t['button_flg_3'])=="" ))){
-        $err_msg[] = "label:".$t['label']." ".$lc."行目→3つ目の自由回答テキスト button_text_3 か飛び先ID button_flg_3 かのどちらかがありません。";
-      }
-      if($t['format']=="button" && (is_null($t['button_text_4']) xor is_null($t['button_flg_4']))){
+      if( ($t['format']=="button" || $t['format']=="button_q") && (is_null($t['button_text_4']) xor is_null($t['button_flg_4']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→4つ目のボタンテキスト button_text_4 かボタンID button_flg_4 かのどちらかがありません。";
       }
-      if($t['format']=="branch" && is_null($t['button_flg_4'])){
-        $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがbranchですが、自由回答が一致しなかった時の飛び先ID button_flg_4 がありません。";
-      }
-      if(($t['format']=="button" || $t['format']=="branch") && !is_null($t['button_text_1']) && !isScenarioLabel($data,$t['button_flg_1'])){
+      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_1']) && !isScenarioLabel($data,$t['button_flg_1'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→1つ目の遷移先ID button_flg_1 の遷移先になるデータがありません。";
       }
-      if(($t['format']=="button" || $t['format']=="branch") && !is_null($t['button_text_2']) && !isScenarioLabel($data,$t['button_flg_2'])){
+      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_2']) && !isScenarioLabel($data,$t['button_flg_2'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→2つ目の遷移先ID button_flg_2 の遷移先になるデータがありません。";
       }
-      if(($t['format']=="button" || $t['format']=="branch") && !is_null($t['button_text_3']) && !isScenarioLabel($data,$t['button_flg_3'])){
+      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_3']) && !isScenarioLabel($data,$t['button_flg_3'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→3つ目の遷移先ID button_flg_3 の遷移先になるデータがありません。";
       }
-      if(($t['format']=="button" || $t['format']=="branch") && !is_null($t['button_text_4']) && !isScenarioLabel($data,$t['button_flg_4'])){
+      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_4']) && !isScenarioLabel($data,$t['button_flg_4'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→4つ目の遷移先ID button_flg_4 の遷移先になるデータがありません。";
       }
       if($t['format']=="nazo" && is_null($t['nazo_seikai'])){
@@ -163,23 +148,22 @@ if($data){
       }
 
 
-
       if($t['format']=="image" && !file_exists(IMAGE_DIR.$t['img_name']) ){
         $cau_msg[] = "label:".$t['label']." ".$lc."行目→formatがimageですが、画像ファイル ".$t['img_name']."が無いようです。";
       }
       if($t['format']=="image" && !file_exists(IMAGE_DIR."s_".$t['img_name']) ){
         $cau_msg[] = "label:".$t['label']." ".$lc."行目→formatがimageですが、サムネイル画像ファイル s_".$t['img_name']."が無いようです。";
       }
-      if($t['format']=="button" && strlen($t['button_text_1']) > 36 ){
+      if( ($t['format']=="button" || $t['format']=="button_q") && strlen($t['button_text_1']) > 36 ){
         $cau_msg[] = "label:".$t['label']." ".$lc."行目→button_text_1が長すぎです。全角12字以内が目安です。";
       }
-      if($t['format']=="button" && strlen($t['button_text_2']) > 36 ){
+      if( ($t['format']=="button" || $t['format']=="button_q") && strlen($t['button_text_2']) > 36 ){
         $cau_msg[] = "label:".$t['label']." ".$lc."行目→button_text_2が長すぎです。全角12字以内が目安です。";
       }
-      if($t['format']=="button" && strlen($t['button_text_3']) > 36 ){
+      if( ($t['format']=="button" || $t['format']=="button_q") && strlen($t['button_text_3']) > 36 ){
         $cau_msg[] = "label:".$t['label']." ".$lc."行目→button_text_3が長すぎです。全角12字以内が目安です。";
       }
-      if($t['format']=="button" && strlen($t['button_text_4']) > 36 ){
+      if( ($t['format']=="button" || $t['format']=="button_q") && strlen($t['button_text_4']) > 36 ){
         $cau_msg[] = "label:".$t['label']." ".$lc."行目→button_text_4が長すぎです。全角12字以内が目安です。";
       }
 
