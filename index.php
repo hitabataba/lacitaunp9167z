@@ -95,13 +95,6 @@ foreach ($events as $event) {
 //ユーザー確認
   $progress = getProgressDataByUserId($event->getUserId());
 
-//3月期のプレイの途中ならば
-  $reset3 = array();
-  if(substr($progress[0],0,5) == "TEXT0") {
-    $progress[0] = 'WELCOME'; //進捗を初期状態に
-    $reset[3] = true;
-  }
-
   if($progress === PDO::PARAM_NULL) {
     $progress= array(); //進捗を初期状態に
     $progress[0] = 'WELCOME'; //進捗を初期状態に
@@ -114,6 +107,17 @@ foreach ($events as $event) {
 //    foreach($text['TEXT00'] as $val){
 //      $messages[] = $val;
 //    }
+  }
+//3月期のプレイの途中ならば
+  if(substr($progress[0],0,5) == "TEXT0") {
+    $progress[0] = 'WELCOME'; //進捗を初期状態に
+
+    $text = getSenarioRows($text,$progress[0]);
+    updateUser($event->getUserId(), json_encode($progress));
+    foreach($text[$progress[0]] as $val){
+      $messages[] = $val;
+    }
+    break;
   }
 
 //初期登録時
@@ -167,13 +171,6 @@ foreach ($events as $event) {
           foreach($text[$progress[0]] as $val){
             $messages[] = $val;
           }
-        }
-      }
-  //3月期初期化
-      if($reset[3] == true){
-        $text = getSenarioRows($text,$progress[0]);
-        foreach($text[$progress[0]] as $val){
-          $messages[] = $val;
         }
       }
       break;
