@@ -11,6 +11,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 define('TABLE_NAME_PROGRESS', 'user_progress');
 define('TABLE_NAME_SCENARIO', 'scenario_data');
 define('TABLE_NAME_SERIALLIST', 'seriallist');
+define('TABLE_NAME_QUESTIONNAIRE', 'user_questionnaire');
+
 //画像格納ディレクトリ
 define('IMAGE_DIR', 'https://'.$_SERVER['HTTP_HOST'].'/img/');
 define('AUDIO_DIR', 'https://'.$_SERVER['HTTP_HOST'].'/audio/');
