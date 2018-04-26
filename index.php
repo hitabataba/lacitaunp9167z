@@ -1,4 +1,8 @@
 <?php
+    $answer_data = array($quest => $answer);
+
+
+
 setlocale(LC_ALL, 'ja_JP.UTF-8');
 
 // Composerでインストールしたライブラリを一括読み込み
@@ -455,8 +459,13 @@ function updateUserQuestionnaire($userId, $quest, $answer) {
     $sth->execute(array($userId,json_encode($answer_data)));
 
   }else{
+error_log($row['answer']);
     $answer_data = json_decode($row['answer'],true);
     $answer_data[$quest] = $answer;
+foreach($answer_data as $q => $a){
+error_log($q ."|". $a);
+}
+
 
     $sql = 'update ' . TABLE_NAME_QUESTIONNAIRE . ' set answer = ? , update_timestamp = now() where ? = pgp_sym_decrypt(userid, \'' . getenv('DB_ENCRYPT_PASS') . '\')';
     $sth = $dbh->prepare($sql);
