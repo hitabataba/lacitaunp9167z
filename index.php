@@ -97,7 +97,7 @@ foreach ($events as $event) {
 
 //3月期のプレイの途中ならば
   $reset3 = array();
-  if(substr($progress,0,5) == "TEXT0") {
+  if(substr($progress[0],0,5) == "TEXT0") {
     $progress[0] = 'WELCOME'; //進捗を初期状態に
     $reset[3] = true;
   }
