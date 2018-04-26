@@ -94,6 +94,14 @@ foreach ($events as $event) {
 
 //ユーザー確認
   $progress = getProgressDataByUserId($event->getUserId());
+
+//3月期のプレイの途中ならば
+  $reset3 = array();
+  if(substr($progress,0,5) == "TEXT0") {
+    $progress[0] = 'WELCOME'; //進捗を初期状態に
+    $reset[3] = true;
+  }
+
   if($progress === PDO::PARAM_NULL) {
     $progress= array(); //進捗を初期状態に
     $progress[0] = 'WELCOME'; //進捗を初期状態に
@@ -161,11 +169,15 @@ foreach ($events as $event) {
           }
         }
       }
+  //3月期初期化
+      if($reset[3] == true){
+        $text = getSenarioRows($text,$progress[0]);
+        foreach($text[$progress[0]] as $val){
+          $messages[] = $val;
+        }
+      }
       break;
 
-
-//    default:
-//      break;
     }
 //自由記入があった場合
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
@@ -176,21 +188,42 @@ foreach ($events as $event) {
       }
     }else{
       $nazoline_check = false;
-      $correct_check = false;
 
       $text = getSenarioRows($text,$progress[0]);
       foreach($text[$progress[0]] as $l){
         if($l['format']=='nazo'){
+          $correct_check = false;
           $corrects = explode(' ',$l['nazo_seikai']);
           foreach($corrects as $correct){
             if($event->getText()==$correct){
-              $correct_check = true;;
+              $correct_check = true;
             }
           }
           if($correct_check){
             $progress[0] = $l['nazo_flg_1'];
           }else{
             $progress[0] = $l['nazo_flg_2'];
+          }
+          updateUser($event->getUserId(), json_encode($progress));
+          $text = getSenarioRows($text,$progress[0]);
+          foreach($text[$progress[0]] as $val){
+            $messages[] = $val;
+          }
+          $nazoline_check = true;
+          break;
+
+        }else if($l['format']=='branch'){
+          $correct_check = 0;
+          $progress[0] = $l['button_flg_4'];  //初期値は誤答
+          if($l['button_text_1']){$corrects_ary[1] = explode(' ',$l['button_text_1']);}
+          if($l['button_text_2']){$corrects_ary[2] = explode(' ',$l['button_text_2']);}
+          if($l['button_text_3']){$corrects_ary[3] = explode(' ',$l['button_text_3']);}
+          foreach($corrects_ary as $key => $corrects){
+            foreach($corrects as $correct){
+              if($event->getText()==$correct){
+                $progress[0] = $l['button_flg_'.$key];
+              }
+            }
           }
           updateUser($event->getUserId(), json_encode($progress));
           $text = getSenarioRows($text,$progress[0]);
@@ -280,8 +313,12 @@ function replyMultiMessage($bot, $replyToken, $msgs, $profile) {
     switch($value['format']){
     case "text":
     case "nazo":
+    case "branch":
       $value['text'] = str_replace('[player_name]', $profile['displayName'], $value['text']);
       $msg = new LINE\LINEBot\MessageBuilder\TextMessageBuilder($value['text']);
+      break;
+    case "stamp":
+      $msg = new LINE\LINEBot\MessageBuilder\StickerMessageBuilder($value['stamp_package_id'],$value['stamp_id']);
       break;
     case "image":
       $value['thumimg_name']= 's_'.$value['img_name'];
@@ -293,15 +330,19 @@ function replyMultiMessage($bot, $replyToken, $msgs, $profile) {
     case "button":
       $postback = array();
       if(trim($value['button_text_1']) && trim($value['button_flg_1'])){
+        $value['button_text_1'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_1']);
         $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_1'],$value['label']."$".$value['button_flg_1']);
       }
       if(trim($value['button_text_2']) && trim($value['button_flg_2'])){
+        $value['button_text_2'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_2']);
         $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_2'],$value['label']."$".$value['button_flg_2']);
       }
       if(trim($value['button_text_3']) && trim($value['button_flg_3'])){
+        $value['button_text_3'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_3']);
         $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_3'],$value['label']."$".$value['button_flg_3']);
       }
       if(trim($value['button_text_4']) && trim($value['button_flg_4'])){
+        $value['button_text_4'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_4']);
         $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_4'],$value['label']."$".$value['button_flg_4']);
       }
 //      foreach($value['button'] as $key => $val) {

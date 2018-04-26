@@ -10,6 +10,8 @@ $err_msg = array();
 $cau_msg = array();
 $msg = array();
 
+$image_files = array();
+
 if (is_uploaded_file($_FILES["imgfile"]["tmp_name"])) {
   $file_tmp_name = $_FILES["imgfile"]["tmp_name"];
   $file_name = $_FILES["imgfile"]["name"];
@@ -32,6 +34,13 @@ if (is_uploaded_file($_FILES["imgfile"]["tmp_name"])) {
 } else {
   $err_msg[] = "ファイルを選択してください。";
 }
+
+foreach(glob(IMAGE_DIR.'{*.gif,*.jpeg,*.jpg,*.png}',GLOB_BRACE) as $file){
+    if(is_file($file)){
+        $image_files[] = basename($file);
+    }
+}
+
 
 function checkImageFile($file_name){
   if (pathinfo($file_name, PATHINFO_EXTENSION) == 'jpg' 
@@ -83,3 +92,17 @@ if($cau_msg){
 }
 ?>
 </ul>
+
+<hr>
+アップした画像一覧<br>
+
+<?php
+if($image_files){
+  foreach($image_files as $f){
+    echo("<img style='width:256px;' src='../img/");
+    echo($f);
+    echo("'>");
+  }
+}
+?>
+

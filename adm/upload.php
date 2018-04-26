@@ -136,6 +136,16 @@ if($data){
       if($t['format']=="nazo" && !isScenarioLabel($data,$t['nazo_flg_2'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→誤答時の遷移先ID nazo_flg_2 の遷移先になるデータがありません。";
       }
+      if($t['format']=="stamp" && is_null($t['stamp_package_id'])){
+        $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがstampですが、スタンプのパッケージID stamp_package_id がありません。";
+      }else if($t['format']=="stamp" && (!is_int((int)$t['stamp_package_id']) || (int)$t['stamp_package_id'] < 1)){
+        $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがstampですが、スタンプのパッケージID stamp_package_id は正の整数にしてください。";
+      }
+      if($t['format']=="stamp" && is_null($t['stamp_id'])){
+        $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがstampですが、スタンプID stamp_id がありません。";
+      }else if($t['format']=="stamp" && (!is_numeric((int)$t['stamp_id']) || (int)$t['stamp_id'] < 1)){
+        $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがstampですが、スタンプのパッケージID stamp_id は正の整数にしてください。";
+      }
 
 
       if($t['format']=="image" && !file_exists(IMAGE_DIR.$t['img_name']) ){
@@ -173,10 +183,10 @@ if(!$err_msg){
     foreach($data as $text){
       foreach($text as $t){
         $sql = "insert into ". TABLE_NAME_SCENARIO .
-        " (label,no,format,text,img_name,button_text_1,button_flg_1,button_text_2,button_flg_2,button_text_3,button_flg_3,button_text_4,button_flg_4,nazo_seikai,nazo_flg_1,nazo_flg_2) ".
-        " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+        " (label,no,format,text,img_name,button_text_1,button_flg_1,button_text_2,button_flg_2,button_text_3,button_flg_3,button_text_4,button_flg_4,nazo_seikai,nazo_flg_1,nazo_flg_2,stamp_package_id,stamp_id) ".
+        " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         $sth = $dbh->prepare($sql);
-        $sth->execute(array($t['label'],$t['no'],$t['format'],$t['text'],$t['img_name'],$t['button_text_1'],$t['button_flg_1'],$t['button_text_2'],$t['button_flg_2'],$t['button_text_3'],$t['button_flg_3'],$t['button_text_4'],$t['button_flg_4'],$t['nazo_seikai'],$t['nazo_flg_1'],$t['nazo_flg_2']));
+        $sth->execute(array($t['label'],$t['no'],$t['format'],$t['text'],$t['img_name'],$t['button_text_1'],$t['button_flg_1'],$t['button_text_2'],$t['button_flg_2'],$t['button_text_3'],$t['button_flg_3'],$t['button_text_4'],$t['button_flg_4'],$t['nazo_seikai'],$t['nazo_flg_1'],$t['nazo_flg_2'],(int)$t['stamp_package_id'],(int)$t['stamp_id']));
       }
     }
     $dbh->commit();
@@ -187,7 +197,9 @@ if(!$err_msg){
     $dbh->rollBack();
   }
 }else{
-  $err_msg[] = "シナリオデータにエラーがあるため、データベース登録処理は中止されました。";
+  if($_FILES){
+    $err_msg[] = "シナリオデータにエラーがあるため、データベース登録処理は中止されました。";
+  }
 }
 
 function isScenarioLabel($data,$label){
