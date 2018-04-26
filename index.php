@@ -334,22 +334,22 @@ function replyMultiMessage($bot, $replyToken, $msgs, $profile) {
     case "button_q":
       $postback = array();
       if(trim($value['button_text_1']) && trim($value['button_flg_1'])){
-        if($value['format'] == "button_q"){$q_txt = $value['button_text_1'];}else{$q_txt = ""}
+        if($value['format'] == "button_q"){$q_txt = $value['button_text_1'];}else{$q_txt = "";}
         $value['button_text_1'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_1']);
         $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_1'],$value['label']."$".$value['button_flg_1']."$".$q_txt);
       }
       if(trim($value['button_text_2']) && trim($value['button_flg_2'])){
-        if($value['format'] == "button_q"){$q_txt = $value['button_text_2'];}else{$q_txt = ""}
+        if($value['format'] == "button_q"){$q_txt = $value['button_text_2'];}else{$q_txt = "";}
         $value['button_text_2'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_2']);
         $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_2'],$value['label']."$".$value['button_flg_2']."$".$q_txt);
       }
       if(trim($value['button_text_3']) && trim($value['button_flg_3'])){
-        if($value['format'] == "button_q"){$q_txt = $value['button_text_3'];}else{$q_txt = ""}
+        if($value['format'] == "button_q"){$q_txt = $value['button_text_3'];}else{$q_txt = "";}
         $value['button_text_3'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_3']);
         $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_3'],$value['label']."$".$value['button_flg_3']."$".$q_txt);
       }
       if(trim($value['button_text_4']) && trim($value['button_flg_4'])){
-        if($value['format'] == "button_q"){$q_txt = $value['button_text_4'];}else{$q_txt = ""}
+        if($value['format'] == "button_q"){$q_txt = $value['button_text_4'];}else{$q_txt = "";}
         $value['button_text_4'] = str_replace('[player_name]', $profile['displayName'], $value['button_text_4']);
         $postback[] = new LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder($value['button_text_4'],$value['label']."$".$value['button_flg_4']."$".$q_txt);
       }
