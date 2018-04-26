@@ -447,12 +447,12 @@ function updateUserQuestionnaire($userId, $quest, $answer) {
   $sql = 'select answer from ' . TABLE_NAME_QUESTIONNAIRE . ' where ? = pgp_sym_decrypt(userid, \'' . getenv('DB_ENCRYPT_PASS') . '\')';
   $sth = $dbh->prepare($sql);
   $sth->execute(array($userId));
-  // レコードが存在しなければNULL
+  // レコードが存在しなければ新規登録
   if (!($row = $sth->fetch())) {
     $answer_data = array($quest => $answer);
     $sql = 'insert into '. TABLE_NAME_QUESTIONNAIRE .' (userid,answer) values (pgp_sym_encrypt(?, \'' . getenv('DB_ENCRYPT_PASS') . '\'), ?) ';
     $sth = $dbh->prepare($sql);
-    $sth->execute(array($userId,$answer_data));
+    $sth->execute(array($userId,json_encode($answer_data)));
 
   }else{
     $answer_data = json_decode($row['answer']);
@@ -460,7 +460,7 @@ function updateUserQuestionnaire($userId, $quest, $answer) {
 
     $sql = 'update ' . TABLE_NAME_QUESTIONNAIRE . ' set answer = ? , update_timestamp = now() where ? = pgp_sym_decrypt(userid, \'' . getenv('DB_ENCRYPT_PASS') . '\')';
     $sth = $dbh->prepare($sql);
-    $sth->execute(array($progress, $answer_data));
+    $sth->execute(array($progress, json_encode($answer_data)));
   }
 }
 
