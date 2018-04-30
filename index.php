@@ -3,8 +3,6 @@ setlocale(LC_ALL, 'ja_JP.UTF-8');
 
 // Composerでインストールしたライブラリを一括読み込み
 require_once __DIR__ . '/vendor/autoload.php';
-// セリフテキスト
-//require_once __DIR__ . '/message.php';
 
 
 // テーブル名を定義
@@ -17,45 +15,6 @@ define('TABLE_NAME_QUESTIONNAIRE', 'user_questionnaire');
 define('IMAGE_DIR', 'https://'.$_SERVER['HTTP_HOST'].'/img/');
 define('AUDIO_DIR', 'https://'.$_SERVER['HTTP_HOST'].'/audio/');
 
-
-/*
-$filepath = __DIR__ . '/message.csv';
-$new_filepath = __DIR__ . '/new_message.csv';
-file_put_contents($new_filepath, mb_convert_encoding(file_get_contents($filepath), 'UTF-8', 'SJIS'));
-
-$file = new SplFileObject($new_filepath); 
-$file->setFlags(SplFileObject::READ_CSV); 
-
-$i=0;
-foreach ($file as $line) {
-//終端の空行を除く処理　空行の場合に取れる値は後述
-  switch($i){
-  case 0:
-    $header = $line;
-    break;
-  case 1:
-    break;
-  default:
-    $form_line = array();
-    $fc = 0;
-    if(!is_null($line[0])){
-      foreach ($line as $cel) {
-        if(!is_null($cel) && $cel != ''){
-          $form_line[$header[$fc]] = $cel;
-        }
-        $fc++;
-      }
-      if($form_line['format']){
-        $text[$line[0]][] = $form_line;
-      }
-    }
-//var_dump($text[$line[0]]);
-    break;
-  }
-  $i++;
-//echo("<br>");
-}
-*/
 
 // アクセストークンを使いCurlHTTPClientをインスタンス化
 $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
@@ -186,9 +145,20 @@ foreach ($events as $event) {
     }
 //自由記入があった場合
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
-    if($event->getText()=='リセット'){
-      $text = getSenarioRows($text,'CAUTION_RESET');
-      foreach($text['CAUTION_RESET'] as $val){
+    if($event->getText()=='挑戦する'){
+      $progress[0] = "CAUTION_RESET";
+      updateUser($event->getUserId(), json_encode($progress));
+
+      $text = getSenarioRows($text,$progress[0]);
+      foreach($text[$progress[0]] as $val){
+        $messages[] = $val;
+      }
+    }else if($event->getText()=='シンギュラリティ'){
+      $progress[0] = "KEY_Singularity";
+      updateUser($event->getUserId(), json_encode($progress));
+
+      $text = getSenarioRows($text,$progress[0]);
+      foreach($text[$progress[0]] as $val){
         $messages[] = $val;
       }
     }else{
@@ -320,6 +290,7 @@ function replyMultiMessage($bot, $replyToken, $msgs, $profile) {
     case "nazo":
     case "branch":
       $value['text'] = str_replace('[player_name]', $profile['displayName'], $value['text']);
+      $value['text'] = str_replace('[MarchEMOJI]', '🏪👻💀🍺、🦄🏆👶😺🚒💀 🍺、💀🐍🤣 🏪 ⚓🌵🥛、🎺🤖 🌲、🍺、🦄🐶🙈🌲🌵🥀🤣🙈💀 🐟 🗼💀🌵🤣🏆💐', $value['text']);
       $msg = new LINE\LINEBot\MessageBuilder\TextMessageBuilder($value['text']);
       break;
     case "stamp":

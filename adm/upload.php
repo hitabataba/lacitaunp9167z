@@ -88,6 +88,9 @@ if($data){
     $lc = 1;
     foreach($text as $t){
 
+      if(is_null($t['label']) || trim($t['label']) == ""){
+        $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがtextですが、textがありません。";
+      }
       if($t['format']=="text" && is_null($t['text'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがtextですが、textがありません。";
       }
