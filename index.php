@@ -139,6 +139,10 @@ foreach ($events as $event) {
             $messages[] = $val;
           }
         }
+//クリアLog取得
+        if($step == "TXT05_04"){
+          error_log('Log--May Clear');
+        }
       }
       break;
 
