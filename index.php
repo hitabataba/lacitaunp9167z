@@ -153,14 +153,6 @@ foreach ($events as $event) {
       foreach($text[$progress[0]] as $val){
         $messages[] = $val;
       }
-    }else if($event->getText()=='シンギュラリティ'){
-      $progress[0] = "KEY_Singularity";
-      updateUser($event->getUserId(), json_encode($progress));
-
-      $text = getSenarioRows($text,$progress[0]);
-      foreach($text[$progress[0]] as $val){
-        $messages[] = $val;
-      }
     }else{
       $nazoline_check = false;
 
