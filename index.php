@@ -100,6 +100,7 @@ foreach ($events as $event) {
 //  }else if ($event->type == "beacon") {
 error_log("ビーコン");
     if($event->getBeaconEventType == "enter"){
+      $text = getSenarioRows($text,"TXT05_22");
       foreach($text["TXT05_22"] as $val){
         $messages[] = $val;
       }
