@@ -96,12 +96,15 @@ error_log(var_export($event,true));
       $messages[] = $val;
     }
 //ビーコンイベント
-//  }else if (($event instanceof \LINE\LINEBot\Event\BeaconDetectionEvent)) {
-  }else if ($event->type == "beacon") {
-error_log("ビーコン");
+  }else if (($event instanceof \LINE\LINEBot\Event\BeaconDetectionEvent)) {
+//  }else if ($event->type == "beacon") {
 error_log(var_export($event,true));
-    if($event->beacon.type == "enter"){
-      foreach($text["WELCOME"] as $val){
+error_log("ビーコン");
+error_log($event->type);
+error_log("ビーコン配列");
+error_log($event['beacon']['type']);
+    if($event->getBeaconEventType == "enter"){
+      foreach($text["TXT05_22"] as $val){
         $messages[] = $val;
       }
     }
