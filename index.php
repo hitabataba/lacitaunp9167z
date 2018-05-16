@@ -98,6 +98,7 @@ error_log(var_export($event,true));
 //ビーコンイベント
 //  }else if (($event instanceof \LINE\LINEBot\Event\BeaconDetectionEvent)) {
   }else if ($event->type == "beacon") {
+error_log("ビーコン");
 error_log(var_export($event,true));
     if($event->beacon.type == "enter"){
       foreach($text["WELCOME"] as $val){
