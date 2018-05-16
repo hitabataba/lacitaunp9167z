@@ -97,13 +97,11 @@ foreach ($events as $event) {
     }
 //ビーコンイベント
   }else if (($event instanceof \LINE\LINEBot\Event\BeaconDetectionEvent)) {
-//  }else if ($event->type == "beacon") {
 error_log("ビーコン");
-    if($event->getBeaconEventType == "enter"){
-      $text = getSenarioRows($text,"TXT05_22");
-      foreach($text["TXT05_22"] as $val){
-        $messages[] = $val;
-      }
+error_log($event->getBeaconEventType);
+    $text = getSenarioRows($text,"TXT05_22");
+    foreach($text["TXT05_22"] as $val){
+      $messages[] = $val;
     }
 //選択肢入力
   }else if (($event instanceof \LINE\LINEBot\Event\PostbackEvent)) {
