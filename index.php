@@ -94,6 +94,15 @@ foreach ($events as $event) {
     foreach($text[$progress[0]] as $val){
       $messages[] = $val;
     }
+//ビーコンイベント
+//  }else if (($event instanceof \LINE\LINEBot\Event\BeaconDetectionEvent)) {
+  }else if ($event->type == "beacon") {
+error_log(var_export($event,true));
+    if($event->beacon.type == "enter"){
+      foreach($text["WELCOME"] as $val){
+        $messages[] = $val;
+      }
+    }
 //選択肢入力
   }else if (($event instanceof \LINE\LINEBot\Event\PostbackEvent)) {
 //    $step = $event->getPostbackData();
