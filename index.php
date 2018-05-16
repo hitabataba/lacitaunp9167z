@@ -49,6 +49,7 @@ if(!$events){
 }
 
 foreach ($events as $event) {
+error_log(var_export($event,true));
 
   $profile = $bot->getProfile($event->getUserId())->getJSONDecodedBody();
 //    error_log('userid:'. $event->getUserId());
