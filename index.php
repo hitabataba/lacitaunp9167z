@@ -49,7 +49,7 @@ if(!$events){
 }
 
 foreach ($events as $event) {
-error_log(var_export($event,true));
+//error_log(var_export($event,true));
 
   $profile = $bot->getProfile($event->getUserId())->getJSONDecodedBody();
 //    error_log('userid:'. $event->getUserId());
@@ -98,11 +98,7 @@ error_log(var_export($event,true));
 //ビーコンイベント
   }else if (($event instanceof \LINE\LINEBot\Event\BeaconDetectionEvent)) {
 //  }else if ($event->type == "beacon") {
-error_log(var_export($event,true));
 error_log("ビーコン");
-error_log($event->type);
-error_log("ビーコン配列");
-error_log($event['beacon']['type']);
     if($event->getBeaconEventType == "enter"){
       foreach($text["TXT05_22"] as $val){
         $messages[] = $val;
