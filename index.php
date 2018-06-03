@@ -157,9 +157,22 @@ error_log($event->getBeaconEventType);
           foreach($text[$progress[0]] as $val){
             $messages[] = $val;
           }
+//該当するシナリオデータが無い場合
+        }else{
+          error_log('Log--DELETE SenarioData - step:'.$step);
+          $step = "WELCOME";
+          $text = getSenarioRows($text,$step);
+          $progress[0] = $step;
+          updateUser($event->getUserId(), json_encode($progress));
+          foreach($text[$progress[0]] as $val){
+            $messages[] = $val;
+          }
         }
 //クリアLog取得
         if($step == "TXT05_04"){
+          error_log('Log--May Clear');
+        }
+        else if($step == "TXT06_13"){
           error_log('Log--May Clear');
         }
       }
@@ -188,52 +201,64 @@ error_log($event->getBeaconEventType);
       $nazoline_check = false;
 
       $text = getSenarioRows($text,$progress[0]);
-      foreach($text[$progress[0]] as $l){
-        if($l['format']=='nazo'){
-          $correct_check = false;
-          $corrects = explode(' ',$l['nazo_seikai']);
-          foreach($corrects as $correct){
-            if($event->getText()==$correct){
-              $correct_check = true;
-            }
-          }
-          if($correct_check){
-            $progress[0] = $l['nazo_flg_1'];
-          }else{
-            $progress[0] = $l['nazo_flg_2'];
-          }
-          updateUser($event->getUserId(), json_encode($progress));
-          $text = getSenarioRows($text,$progress[0]);
-          foreach($text[$progress[0]] as $val){
-            $messages[] = $val;
-          }
-          $nazoline_check = true;
-          break;
-
-        }else if($l['format']=='branch'){
-          $correct_check = 0;
-          $progress[0] = $l['button_flg_4'];  //初期値は誤答
-          if($l['button_text_1']){$corrects_ary[1] = explode(' ',$l['button_text_1']);}
-          if($l['button_text_2']){$corrects_ary[2] = explode(' ',$l['button_text_2']);}
-          if($l['button_text_3']){$corrects_ary[3] = explode(' ',$l['button_text_3']);}
-          foreach($corrects_ary as $key => $corrects){
+//該当するシナリオデータが無い場合
+      if(!$text[$progress[0]]){
+        error_log('Log--DELETE SenarioData - step:'.$progress[0]);
+        $step = "WELCOME";
+        $text = getSenarioRows($text,$step);
+        $progress[0] = $step;
+        updateUser($event->getUserId(), json_encode($progress));
+        foreach($text[$progress[0]] as $val){
+          $messages[] = $val;
+        }
+      }else{
+        foreach($text[$progress[0]] as $l){
+          if($l['format']=='nazo'){
+            $correct_check = false;
+            $corrects = explode(' ',$l['nazo_seikai']);
             foreach($corrects as $correct){
               if($event->getText()==$correct){
-                $progress[0] = $l['button_flg_'.$key];
+                $correct_check = true;
               }
             }
+            if($correct_check){
+              $progress[0] = $l['nazo_flg_1'];
+            }else{
+              $progress[0] = $l['nazo_flg_2'];
+            }
+            updateUser($event->getUserId(), json_encode($progress));
+            $text = getSenarioRows($text,$progress[0]);
+            foreach($text[$progress[0]] as $val){
+              $messages[] = $val;
+            }
+            $nazoline_check = true;
+            break;
+
+          }else if($l['format']=='branch'){
+            $correct_check = 0;
+            $progress[0] = $l['button_flg_4'];  //初期値は誤答
+            if($l['button_text_1']){$corrects_ary[1] = explode(' ',$l['button_text_1']);}
+            if($l['button_text_2']){$corrects_ary[2] = explode(' ',$l['button_text_2']);}
+            if($l['button_text_3']){$corrects_ary[3] = explode(' ',$l['button_text_3']);}
+            foreach($corrects_ary as $key => $corrects){
+              foreach($corrects as $correct){
+                if($event->getText()==$correct){
+                  $progress[0] = $l['button_flg_'.$key];
+                }
+              }
+            }
+            updateUser($event->getUserId(), json_encode($progress));
+            $text = getSenarioRows($text,$progress[0]);
+            foreach($text[$progress[0]] as $val){
+              $messages[] = $val;
+            }
+            $nazoline_check = true;
+            break;
           }
-          updateUser($event->getUserId(), json_encode($progress));
-          $text = getSenarioRows($text,$progress[0]);
-          foreach($text[$progress[0]] as $val){
-            $messages[] = $val;
-          }
-          $nazoline_check = true;
-          break;
         }
-      }
-      if(!$nazoline_check){
-        error_log('Log--No nazo jump destination');
+        if(!$nazoline_check){
+          error_log('Log--No nazo jump destination');
+        }
       }
 /*
       switch($progress[0]){
