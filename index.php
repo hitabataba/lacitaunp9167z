@@ -99,10 +99,20 @@ foreach ($events as $event) {
   }else if (($event instanceof \LINE\LINEBot\Event\BeaconDetectionEvent)) {
 error_log("ビーコン");
 error_log($event->getBeaconEventType);
-    $text = getSenarioRows($text,"TXT05_22");
-    foreach($text["TXT05_22"] as $val){
-      $messages[] = $val;
+
+    if($progress[0] == "TXT06_beacon"){
+      $step = "TXT06_beacon";
+      $text = getSenarioRows($text,$step);
+      if($text[$step]){
+        $progress[0] = $step;
+        updateUser($event->getUserId(), json_encode($progress));
+        foreach($text[$progress[0]] as $val){
+          $messages[] = $val;
+        }
+      }
+      error_log('Log--Get Beacon Message');
     }
+
 //選択肢入力
   }else if (($event instanceof \LINE\LINEBot\Event\PostbackEvent)) {
 //    $step = $event->getPostbackData();
@@ -160,6 +170,14 @@ error_log($event->getBeaconEventType);
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
     if($event->getText()=='挑戦する'){
       $progress[0] = "CAUTION_RESET";
+      updateUser($event->getUserId(), json_encode($progress));
+
+      $text = getSenarioRows($text,$progress[0]);
+      foreach($text[$progress[0]] as $val){
+        $messages[] = $val;
+      }
+    }else if($event->getText()=='受信できた'){
+      $progress[0] = "TXT06_02";
       updateUser($event->getUserId(), json_encode($progress));
 
       $text = getSenarioRows($text,$progress[0]);
