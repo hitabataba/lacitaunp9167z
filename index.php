@@ -100,7 +100,7 @@ foreach ($events as $event) {
 error_log("ビーコン");
 error_log($event->getBeaconEventType);
 
-    if($progress[0] == "TXT06_beacon"){
+    if($progress[0] == "TXT06_06" || $progress[0] == "TXT06_07X"){
       $step = "TXT06_beacon";
       $text = getSenarioRows($text,$step);
       if($text[$step]){
