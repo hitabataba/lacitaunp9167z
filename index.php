@@ -189,7 +189,7 @@ error_log($event->getBeaconEventType);
       foreach($text[$progress[0]] as $val){
         $messages[] = $val;
       }
-    }else if($event->getText()=='受信'){
+    }else if($event->getText()=='受信' || $event->getText()=='【受信】'){
       $progress[0] = "TXT06_02";
       updateUser($event->getUserId(), json_encode($progress));
 
