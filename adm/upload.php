@@ -112,16 +112,16 @@ if($data){
       if( ($t['format']=="button" || $t['format']=="button_q") && (is_null($t['button_text_4']) xor is_null($t['button_flg_4']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→4つ目のボタンテキスト button_text_4 かボタンID button_flg_4 かのどちらかがありません。";
       }
-      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_1']) && !isScenarioLabel($data,$t['button_flg_1'])){
+      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_1']) && !isScenarioLabel($data,trim($t['button_flg_1']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→1つ目の遷移先ID button_flg_1 の遷移先になるデータがありません。";
       }
-      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_2']) && !isScenarioLabel($data,$t['button_flg_2'])){
+      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_2']) && !isScenarioLabel($data,trim($t['button_flg_2']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→2つ目の遷移先ID button_flg_2 の遷移先になるデータがありません。";
       }
-      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_3']) && !isScenarioLabel($data,$t['button_flg_3'])){
+      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_3']) && !isScenarioLabel($data,trim($t['button_flg_3']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→3つ目の遷移先ID button_flg_3 の遷移先になるデータがありません。";
       }
-      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_4']) && !isScenarioLabel($data,$t['button_flg_4'])){
+      if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_4']) && !isScenarioLabel($data,trim($t['button_flg_4']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→4つ目の遷移先ID button_flg_4 の遷移先になるデータがありません。";
       }
       if($t['format']=="nazo" && is_null($t['nazo_seikai'])){
@@ -133,10 +133,10 @@ if($data){
       if($t['format']=="nazo" && is_null($t['nazo_flg_2'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがnazoですが、誤答時の遷移先ID nazo_flg_2 がありません。";
       }
-      if($t['format']=="nazo" && !isScenarioLabel($data,$t['nazo_flg_1'])){
+      if($t['format']=="nazo" && !isScenarioLabel($data,trim($t['nazo_flg_1']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→正解時の遷移先ID nazo_flg_1 の遷移先になるデータがありません。";
       }
-      if($t['format']=="nazo" && !isScenarioLabel($data,$t['nazo_flg_2'])){
+      if($t['format']=="nazo" && !isScenarioLabel($data,trim($t['nazo_flg_2']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→誤答時の遷移先ID nazo_flg_2 の遷移先になるデータがありません。";
       }
       if($t['format']=="stamp" && is_null($t['stamp_package_id'])){
@@ -189,7 +189,7 @@ if(!$err_msg){
         " (label,no,format,text,img_name,button_text_1,button_flg_1,button_text_2,button_flg_2,button_text_3,button_flg_3,button_text_4,button_flg_4,nazo_seikai,nazo_flg_1,nazo_flg_2,stamp_package_id,stamp_id) ".
         " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         $sth = $dbh->prepare($sql);
-        $sth->execute(array($t['label'],$t['no'],$t['format'],$t['text'],$t['img_name'],$t['button_text_1'],$t['button_flg_1'],$t['button_text_2'],$t['button_flg_2'],$t['button_text_3'],$t['button_flg_3'],$t['button_text_4'],$t['button_flg_4'],$t['nazo_seikai'],$t['nazo_flg_1'],$t['nazo_flg_2'],(int)$t['stamp_package_id'],(int)$t['stamp_id']));
+        $sth->execute(array(trim($t['label']),$t['no'],$t['format'],$t['text'],$t['img_name'],$t['button_text_1'],trim($t['button_flg_1']),$t['button_text_2'],trim($t['button_flg_2']),$t['button_text_3'],trim($t['button_flg_3']),$t['button_text_4'],trim($t['button_flg_4']),$t['nazo_seikai'],trim($t['nazo_flg_1']),trim($t['nazo_flg_2']),(int)$t['stamp_package_id'],(int)$t['stamp_id']));
       }
     }
     $dbh->commit();
