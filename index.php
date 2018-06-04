@@ -183,7 +183,7 @@ error_log($progress[0]);
     }
 //自由記入があった場合
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
-    if($event->getText()=='もう一度'){
+    if($event->getText()=='もう1度' || $event->getText()=='もう１度' || $event->getText()=='もう一度'){
       $progress[0] = "WELCOME";
       updateUser($event->getUserId(), json_encode($progress));
 
