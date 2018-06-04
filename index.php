@@ -183,7 +183,15 @@ error_log($progress[0]);
     }
 //自由記入があった場合
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
-    if($event->getText()=='挑戦する'){
+    if($event->getText()=='もう一度'){
+      $progress[0] = "WELCOME";
+      updateUser($event->getUserId(), json_encode($progress));
+
+      $text = getSenarioRows($text,$progress[0]);
+      foreach($text[$progress[0]] as $val){
+        $messages[] = $val;
+      }
+    }else if($event->getText()=='挑戦する'){
       $progress[0] = "CAUTION_RESET";
       updateUser($event->getUserId(), json_encode($progress));
 
