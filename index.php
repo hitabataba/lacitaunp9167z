@@ -96,6 +96,7 @@ foreach ($events as $event) {
       $messages[] = $val;
     }
 //ビーコンイベント
+/*
   }else if (($event instanceof \LINE\LINEBot\Event\BeaconDetectionEvent)) {
 error_log("ビーコン");
 
@@ -114,7 +115,7 @@ error_log($progress[0]);
       }
       error_log('Log--Get Beacon Message');
     }
-
+*/
 //選択肢入力
   }else if (($event instanceof \LINE\LINEBot\Event\PostbackEvent)) {
 //    $step = $event->getPostbackData();
@@ -180,6 +181,9 @@ error_log($progress[0]);
         else if($step == "TXT07_12"){
           error_log('Log--July Clear');
         }
+        else if($step == "TXT08_13"){
+          error_log('Log--September Clear');
+        }
       }
       break;
 
@@ -187,7 +191,7 @@ error_log($progress[0]);
 //自由記入があった場合
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
     if($event->getText()=='受信' || $event->getText()=='【受信】'){
-      $progress[0] = "TXT07_31";
+      $progress[0] = "TXT08_99";
       updateUser($event->getUserId(), json_encode($progress));
 
       $text = getSenarioRows($text,$progress[0]);
