@@ -333,7 +333,7 @@ function replyMultiMessage($bot, $replyToken, $msgs, $profile) {
       $msg = new LINE\LINEBot\MessageBuilder\ImageMessageBuilder(IMAGE_DIR.$value['img_name'],IMAGE_DIR.$value['thumimg_name']);
       break;
     case "audio":
-      $msg = new LINE\LINEBot\MessageBuilder\AudioMessageBuilder(AUDIO_DIR.$value['audiofile'],$value['stamp_id']);
+      $msg = new LINE\LINEBot\MessageBuilder\AudioMessageBuilder(AUDIO_DIR.$value['img_name'],$value['stamp_id']);
       break;
     case "button":
     case "button_q":
