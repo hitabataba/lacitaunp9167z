@@ -124,6 +124,18 @@ if($data){
       if( ($t['format']=="button" || $t['format']=="button_q") && !is_null($t['button_text_4']) && !isScenarioLabel($data,trim($t['button_flg_4']))){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→4つ目の遷移先ID button_flg_4 の遷移先になるデータがありません。";
       }
+      if( ($t['format']=="button" || $t['format']=="button_q") && mb_strlen($t['button_text_1']) > 20 ){
+        $err_msg[] = "label:".$t['label']." ".$lc."行目→button_text_1が長すぎです。20字以内にしてください。";
+      }
+      if( ($t['format']=="button" || $t['format']=="button_q") && mb_strlen($t['button_text_2']) > 20 ){
+        $err_msg[] = "label:".$t['label']." ".$lc."行目→button_text_2が長すぎです。20字以内にしてください。";
+      }
+      if( ($t['format']=="button" || $t['format']=="button_q") && mb_strlen($t['button_text_3']) > 20 ){
+        $err_msg[] = "label:".$t['label']." ".$lc."行目→button_text_3が長すぎです。20字以内にしてください。";
+      }
+      if( ($t['format']=="button" || $t['format']=="button_q") && mb_strlen($t['button_text_4']) > 20 ){
+        $err_msg[] = "label:".$t['label']." ".$lc."行目→button_text_4が長すぎです。20字以内にしてください。";
+      }
       if($t['format']=="nazo" && is_null($t['nazo_seikai'])){
         $err_msg[] = "label:".$t['label']." ".$lc."行目→formatがnazoですが、正解のテキスト nazo_seikai がありません。";
       }

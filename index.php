@@ -60,10 +60,6 @@ foreach ($events as $event) {
   if($progress === PDO::PARAM_NULL) {
     $progress= array(); //進捗を初期状態に
     $progress[0] = 'WELCOME'; //進捗を初期状態に
-    $progress[1] =""; //進捗を初期状態に
-    $progress[2] =""; //進捗を初期状態に
-    $progress[3] =""; //進捗を初期状態に
-    $progress[4] =""; //進捗を初期状態に
 
     registerUser($event->getUserId(), json_encode($progress));
 //    foreach($text['TEXT00'] as $val){
@@ -85,10 +81,7 @@ foreach ($events as $event) {
 //初期登録時
   if (($event instanceof \LINE\LINEBot\Event\FollowEvent)) {
     $progress[0] ='WELCOME'; //進捗を初期状態に
-    $progress[1] =""; //進捗を初期状態に
-    $progress[2] =""; //進捗を初期状態に
-    $progress[3] =""; //進捗を初期状態に
-    $progress[4] =""; //進捗を初期状態に
+
     updateUser($event->getUserId(), json_encode($progress));
 
     $text = getSenarioRows($text,$progress[0]);
@@ -118,7 +111,6 @@ error_log($progress[0]);
 */
 //選択肢入力
   }else if (($event instanceof \LINE\LINEBot\Event\PostbackEvent)) {
-//    $step = $event->getPostbackData();
     $steps = explode('$', $event->getPostbackData(), 3);
     $past_step = $steps[0];
     $step = $steps[1];
@@ -127,23 +119,13 @@ error_log($progress[0]);
     if($q_rec != false){
       updateUserQuestionnaire($event->getUserId(), $past_step, $q_rec);
     }
-    error_log('Log--'.$step);
+    error_log('Log--past_step;'.$past_step.', $next_step:'.$step);
 
     switch($past_step){
     case 'ResetYes':
       $progress[0] ="WELCOME"; //進捗を初期状態に
-      $progress[1] =""; //進捗を初期状態に
-      $progress[2] =""; //進捗を初期状態に
-      $progress[3] =""; //進捗を初期状態に
-      $progress[4] =""; //進捗を初期状態に
 
       updateUser($event->getUserId(), json_encode($progress));
-
-/*
-      foreach($text['SUCCESS_RESET'] as $val){
-        $messages[] = $val;
-      }
-*/
 
       $text = getSenarioRows($text,$progress[0]);
       foreach($text[$progress[0]] as $val){
@@ -160,9 +142,10 @@ error_log($progress[0]);
           foreach($text[$progress[0]] as $val){
             $messages[] = $val;
           }
+
 //該当するシナリオデータが無い場合
         }else{
-          error_log('Log--DELETE SenarioData - step:'.$step);
+          error_log('Log--DELETE SenarioData - paststep'.$past_step.', nextstep:'.$step);
           $step = "WELCOME";
           $text = getSenarioRows($text,$step);
           $progress[0] = $step;
@@ -204,7 +187,7 @@ error_log($progress[0]);
       $text = getSenarioRows($text,$progress[0]);
 //該当するシナリオデータが無い場合
       if(!$text[$progress[0]]){
-        error_log('Log--DELETE SenarioData - step:'.$progress[0]);
+        error_log('Log--DELETE SenarioData - paststep'.$step.', nextstep:'.$progress[0]);
         $step = "WELCOME";
         $text = getSenarioRows($text,$step);
         $progress[0] = $step;
@@ -334,12 +317,12 @@ function replyMultiMessage($bot, $replyToken, $msgs, $profile) {
 //    $value = json_decode($json_msg,true);
     $value = $json_msg;
     $msg = null;
+
     switch($value['format']){
     case "text":
     case "nazo":
     case "branch":
       $value['text'] = str_replace('[player_name]', $profile['displayName'], $value['text']);
-      $value['text'] = str_replace('[MarchEMOJI]', '🏪👻💀🍺、🦄🏆👶😺🚒💀 🍺、💀🐍🤣 🏪 ⚓🌵🥛、🎺🤖 🌲、🍺、🦄🐶🙈🌲🌵🥀🤣🙈💀 🐟 🗼💀🌵🤣🏆💐', $value['text']);
       $msg = new LINE\LINEBot\MessageBuilder\TextMessageBuilder($value['text']);
       break;
     case "stamp":
@@ -350,7 +333,7 @@ function replyMultiMessage($bot, $replyToken, $msgs, $profile) {
       $msg = new LINE\LINEBot\MessageBuilder\ImageMessageBuilder(IMAGE_DIR.$value['img_name'],IMAGE_DIR.$value['thumimg_name']);
       break;
     case "audio":
-      $msg = new LINE\LINEBot\MessageBuilder\AudioMessageBuilder(AUDIO_DIR.$value['audiofile'],$value['audioduration']);
+      $msg = new LINE\LINEBot\MessageBuilder\AudioMessageBuilder(AUDIO_DIR.$value['audiofile'],$value['stamp_id']);
       break;
     case "button":
     case "button_q":

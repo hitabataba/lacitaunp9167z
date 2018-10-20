@@ -12,6 +12,7 @@ $msg = array();
 
 $image_files = array();
 
+
 if (is_uploaded_file($_FILES["imgfile"]["tmp_name"])) {
   $file_tmp_name = $_FILES["imgfile"]["tmp_name"];
   $file_name = $_FILES["imgfile"]["name"];
@@ -94,6 +95,11 @@ if($cau_msg){
 </ul>
 
 <hr>
+
+<form action="./imagezip_download.php" method='post'>
+ <input type="submit" value='画像一括ダウンロード' />
+</form>
+
 アップした画像一覧<br>
 
 <?php
