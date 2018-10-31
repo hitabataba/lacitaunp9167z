@@ -174,7 +174,7 @@ error_log($progress[0]);
 //自由記入があった場合
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
     if($event->getText()=='受信' || $event->getText()=='【受信】'){
-      $progress[0] = "TXT08_99";
+      $progress[0] = "TXT10_99";
       updateUser($event->getUserId(), json_encode($progress));
 
       $text = getSenarioRows($text,$progress[0]);
