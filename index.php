@@ -167,13 +167,19 @@ error_log($progress[0]);
         else if($step == "TXT08_13"){
           error_log('Log--September Clear');
         }
+        else if($step == "TXT10_70"){
+          error_log('Log--November Clear-UTOPIA');
+        }
+        else if($step == "TXT10_80"){
+          error_log('Log--November Clear-DYSTOPIA');
+        }
       }
       break;
 
     }
 //自由記入があった場合
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
-    if($event->getText()=='受信' || $event->getText()=='【受信】'){
+    if($event->getText()=='受信' || $event->getText()=='【受信】' || $event->getText()=='別の未来' || $event->getText()=='【別の未来】'){
       $progress[0] = "TXT10_99";
       updateUser($event->getUserId(), json_encode($progress));
 
