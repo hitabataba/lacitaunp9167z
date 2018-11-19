@@ -162,7 +162,7 @@ error_log($progress[0]);
 //自由記入があった場合
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
     if($text = getMessageRows($text,$event->getText())){
-        foreach($text as $val){
+        foreach($text[$event->getText()] as $val){
           $messages[] = $val;
         }
     }else if($event->getText()=='受信' || $event->getText()=='【受信】' || $event->getText()=='別の未来' || $event->getText()=='【別の未来】'){
@@ -502,7 +502,7 @@ var_dump($row);
   }else{
 $count = 0;
     while($row){
-      $text[$row['no']] = $row;
+      $text[$keyword][$row['no']] = $row;
 $count++;
 error_log($count);
 if($count>10){
