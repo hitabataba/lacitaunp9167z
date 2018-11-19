@@ -8,7 +8,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 // テーブル名を定義
 define('TABLE_NAME_PROGRESS', 'user_progress');
 define('TABLE_NAME_SCENARIO', 'scenario_data');
-define('TABLE_NAME_MESSAGE', 'message_data');
 define('TABLE_NAME_SERIALLIST', 'seriallist');
 define('TABLE_NAME_QUESTIONNAIRE', 'user_questionnaire');
 
@@ -66,6 +65,17 @@ foreach ($events as $event) {
 //    foreach($text['TEXT00'] as $val){
 //      $messages[] = $val;
 //    }
+  }
+//3月期のプレイの途中ならば
+  if(substr($progress[0],0,5) == "TEXT0") {
+    $progress[0] = 'WELCOME'; //進捗を初期状態に
+
+    $text = getSenarioRows($text,$progress[0]);
+    updateUser($event->getUserId(), json_encode($progress));
+    foreach($text[$progress[0]] as $val){
+      $messages[] = $val;
+    }
+    break;
   }
 
 //初期登録時
@@ -156,11 +166,7 @@ error_log($progress[0]);
     }
 //自由記入があった場合
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
-    if($text = getMessageRows($text,$event->getText())){
-        foreach($text as $val){
-          $messages[] = $val;
-        }
-    }else if($event->getText()=='受信' || $event->getText()=='【受信】' || $event->getText()=='別の未来' || $event->getText()=='【別の未来】'){
+    if($event->getText()=='受信' || $event->getText()=='【受信】' || $event->getText()=='別の未来' || $event->getText()=='【別の未来】'){
       $progress[0] = "TXT10_99";
       updateUser($event->getUserId(), json_encode($progress));
 
@@ -483,21 +489,7 @@ function getSenarioRows($text,$label) {
   return $text;
 }
 
-//メッセージ（ヒント）データ取得
-function getMessageRows($text,$keyword) {
-  $dbh = dbConnection::getConnection();
-  $sql = 'select * from ' . TABLE_NAME_MESSAGE . ' where keyword = ? order by no';
-  $sth = $dbh->prepare($sql);
-  $sth->execute(array($keyword));
-  if(!$row = $sth->fetch()){
-    return false;
-  }else{
-    while($row){
-      $text[$row['no']] = $row;
-    }
-  }
-  return $text;
-}
+
 
 // ユーザーIDを元にデータベースからシリアル登録状況を取得
 function getSerialExistProgressDataByUserId($userId) {
