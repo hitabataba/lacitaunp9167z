@@ -41,6 +41,11 @@ try {
 //シナリオデータ
 $text = array();
 
+
+$text = getMessageRows($text,'いか');
+var_dump($text);
+
+
 $messages = array();
 // 配列に格納された各イベントをループで処理
 
@@ -496,8 +501,7 @@ $count = 0;
     while($row){
       $text[$row['no']] = $row;
 $count++;
-var_dump($count);
-var_dump($text);
+error_log($count);
 if($count>10){
 break;
 }
