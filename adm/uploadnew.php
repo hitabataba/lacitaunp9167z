@@ -100,7 +100,7 @@ if($data){
     $lc = 1;
     foreach($text as $t){
 
-      $vali_head = $first_column.":".$t[$first_column]."の";
+      $vali_head = $first_column.":「".$t[$first_column]."」の";
 
 /*
       if(is_null($t[$first_column]) || trim($t[$first_column]) == ""){
@@ -110,7 +110,7 @@ if($data){
       if($t['format']=="text" && is_null($t['text'])){
         $err_msg[] = $vali_head.$lc."行目→formatがtextですが、textがありません。";
       }
-      if($t['format']=="image" && is_null($t['img_name'])){
+      if($t['format']=="image" && is_null($t['file_name'])){
         $err_msg[] = $vali_head.$lc."行目→formatがimgですが、画像ファイル名がありません。";
       }
       if( ($t['format']=="button" || $t['format']=="button_q") && is_null($t['button_text_1'])){
