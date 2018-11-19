@@ -494,7 +494,10 @@ function getMessageRows($text,$keyword) {
   $sql = 'select * from ' . TABLE_NAME_MESSAGE . ' where keyword = ? order by no';
   $sth = $dbh->prepare($sql);
   $sth->execute(array($keyword));
-  if(!$row = $sth->fetch()){
+  $row = $sth->fetch();
+error_log(count($row));
+/*
+  if(!$row){
     return false;
   }else{
 //$count = 0;
@@ -507,8 +510,9 @@ if($count>10){
 break;
 }
 */
-    }
-  }
+//    }
+//  }
+
   return $text;
 }
 
