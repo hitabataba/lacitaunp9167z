@@ -230,7 +230,7 @@ if(!$err_msg){
       foreach($text as $t){
         $sql = "insert into ". $target_table .
         " (".$first_column.",no,format,text,file_name,file_property,button_text_1,button_flg_1,button_condition_1,button_text_2,button_flg_2,button_condition_2,button_text_3,button_flg_3,button_condition_3,button_text_4,button_flg_4,button_condition_4,nazo_seikai,nazo_flg_1,nazo_flg_2,stamp_package_id,stamp_id) ".
-        " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+        " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 echo($sql);
 var_dump($t);
 echo("<hr>");
