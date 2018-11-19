@@ -231,20 +231,22 @@ if(!$err_msg){
         $sql = "insert into ". $target_table .
         " (".$first_column.",no,format,text,file_name,file_property,button_text_1,button_flg_1,button_condition_1,button_text_2,button_flg_2,button_condition_2,button_text_3,button_flg_3,button_condition_3,button_text_4,button_flg_4,button_condition_4,nazo_seikai,nazo_flg_1,nazo_flg_2,stamp_package_id,stamp_id) ".
         " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+echo($sql);
+echo("<hr>");
         $sth = $dbh->prepare($sql);
         $sth->execute(array(trim($t[$first_column]),$t['no'],$t['format'],$t['text'],$t['file_name'],$t['file_property'],$t['button_text_1'],trim($t['button_flg_1']),trim($t['button_condition_1']),$t['button_text_2'],trim($t['button_flg_2']),trim($t['button_condition_2']),$t['button_text_3'],trim($t['button_flg_3']),trim($t['button_condition_3']),$t['button_text_4'],trim($t['button_flg_4']),trim($t['button_condition_4']),$t['nazo_seikai'],trim($t['nazo_flg_1']),trim($t['nazo_flg_2']),(int)$t['stamp_package_id'],(int)$t['stamp_id']));
       }
     }
     $dbh->commit();
-    $msg[] = "シナリオをデータベース登録しました。";
+    $msg[] = $filekind_name."データをデータベース登録しました。";
   }catch(PDOException $e){
     error_log('Error:'.$e->getMessage());
-    $err_msg[] = "シナリオのデータベース登録に失敗しました。";
+    $err_msg[] = $filekind_name."データのデータベース登録に失敗しました。";
     $dbh->rollBack();
   }
 }else{
   if($_FILES){
-    $err_msg[] = "シナリオデータにエラーがあるため、データベース登録処理は中止されました。";
+    $err_msg[] = $filekind_name."データにエラーがあるため、データベース登録処理は中止されました。";
   }
 }
 
@@ -290,18 +292,19 @@ class dbConnection {
 ?>
 
 <form action="https://<?php echo($_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"]); ?>" method="post" enctype="multipart/form-data">
-  CSVファイル：<br />
+  シナリオCSVファイル：<br />
   <input type="file" name="csvfile" size="30" /><br />
   <input type="submit" value="シナリオcsv アップロード" />
   <input type="hidden" name="filekind" value="senario" />
 </form>
-
+<hr>
 <form action="https://<?php echo($_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"]); ?>" method="post" enctype="multipart/form-data">
-  CSVファイル：<br />
+  キーワードメッセージCSVファイル：<br />
   <input type="file" name="csvfile" size="30" /><br />
   <input type="submit" value="キーワードメッセージcsv アップロード" />
   <input type="hidden" name="filekind" value="keyword" />
 </form>
+<hr>
 
 <ul>
 <?php
