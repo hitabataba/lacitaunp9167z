@@ -161,8 +161,9 @@ error_log($progress[0]);
     }
 //自由記入があった場合
   }else if($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
+//自由メッセージ応答チェック
     if($text = getMessageRows($text,$event->getText())){
-        foreach($text[$event->getText()] as $val){
+        foreach($text as $val){
           $messages[] = $val;
         }
     }else if($event->getText()=='受信' || $event->getText()=='【受信】' || $event->getText()=='別の未来' || $event->getText()=='【別の未来】'){
@@ -494,24 +495,16 @@ function getMessageRows($text,$keyword) {
   $sql = 'select * from ' . TABLE_NAME_MESSAGE . ' where keyword = ? order by no';
   $sth = $dbh->prepare($sql);
   $sth->execute(array($keyword));
-  $row = $sth->fetch();
-error_log(count($row));
-var_dump($row);
-  if(!$row){
+
+  $text = array();
+  while($row = $sth->fetch()){
+    $text[$row['no']] = $row;
+  }
+  if(!$text){
     return false;
   }else{
-$count = 0;
-    while($row){
-      $text[$keyword][$row['no']] = $row;
-$count++;
-error_log($count);
-if($count>10){
-break;
-}
-    }
+    return $text;
   }
-
-  return $text;
 }
 
 // ユーザーIDを元にデータベースからシリアル登録状況を取得
