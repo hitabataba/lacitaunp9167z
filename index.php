@@ -41,11 +41,6 @@ try {
 //シナリオデータ
 $text = array();
 
-
-$text = getMessageRows($text,'いか');
-var_dump($text);
-
-
 $messages = array();
 // 配列に格納された各イベントをループで処理
 
