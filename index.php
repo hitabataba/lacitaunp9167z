@@ -267,6 +267,36 @@ error_log($progress[0]);
 //メッセージの送信
 if($messages){
   replyMultiMessage($bot, $event->getReplyToken(), $messages, $profile);
+//フラグ処理
+  foreach($messages as $m){
+    if($m["flg"]){
+      list($flgname,$flgprocess) = explode("]",$m["flg"]);
+      $flgprcsing = substr($flgprocess,0,1);
+      $flgprcnum = (int)substr($flgprocess,1);
+      
+      if(!isset($progress[$flgname])){
+        $progress[$flgname] = 0;
+      }
+      switch($flgprcsing){
+        case "+":
+          $progress[$flgname] = $progress[$flgname] + $flgprcnum;
+          break;
+        case "-":
+          $progress[$flgname] = $progress[$flgname] - $flgprcnum;
+          break;
+        case "*":
+          $progress[$flgname] = $progress[$flgname] * $flgprcnum;
+          break;
+        case "=":
+          $progress[$flgname] = $flgprcnum;
+          break;
+        default:
+          break;
+      }
+      updateUser($event->getUserId(), json_encode($progress));
+    }
+  }
+
 }
 
 
