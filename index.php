@@ -496,6 +496,7 @@ function getMessageRows($text,$keyword) {
   $sth->execute(array($keyword));
   $row = $sth->fetch();
 error_log(count($row));
+var_dump($row);
 /*
   if(!$row){
     return false;
