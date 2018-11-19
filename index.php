@@ -70,6 +70,8 @@ foreach ($events as $event) {
 
 //初期登録時
   if (($event instanceof \LINE\LINEBot\Event\FollowEvent)) {
+
+    $progress = array();
     $progress[0] ='WELCOME'; //進捗を初期状態に
 
     updateUser($event->getUserId(), json_encode($progress));
