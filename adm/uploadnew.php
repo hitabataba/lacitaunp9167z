@@ -50,8 +50,6 @@ if (is_uploaded_file($_FILES["csvfile"]["tmp_name"])) {
       $i=0;
       //配列に変換する
       while (($line = fgetcsv($fp, 0, ",")) !== FALSE) {
-echo("にら");
-var_dump($line);
         switch($i){
         case 0:
           $header = $line;
@@ -78,7 +76,7 @@ var_dump($line);
               }
               $fc++;
             }
-            if(trim($form_line[$format])){
+            if(trim($form_line['format'])){
               $data[$line[0]][] = $form_line;
             }
           }
