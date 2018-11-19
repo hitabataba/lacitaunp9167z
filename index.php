@@ -497,22 +497,19 @@ function getMessageRows($text,$keyword) {
   $row = $sth->fetch();
 error_log(count($row));
 var_dump($row);
-/*
   if(!$row){
     return false;
   }else{
-//$count = 0;
+$count = 0;
     while($row){
       $text[$row['no']] = $row;
-/*
 $count++;
 error_log($count);
 if($count>10){
 break;
 }
-*/
-//    }
-//  }
+    }
+  }
 
   return $text;
 }
