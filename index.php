@@ -8,7 +8,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 // テーブル名を定義
 define('TABLE_NAME_PROGRESS', 'user_progress');
 define('TABLE_NAME_SCENARIO', 'scenario_data');
-define('TABLE_NAME_MESSAGE', 'message_data');
+define('TABLE_NAME_KEYWORD', 'message_data');
 define('TABLE_NAME_SERIALLIST', 'seriallist');
 define('TABLE_NAME_QUESTIONNAIRE', 'user_questionnaire');
 
@@ -317,11 +317,11 @@ function replyMultiMessage($bot, $replyToken, $msgs, $profile) {
       $msg = new LINE\LINEBot\MessageBuilder\StickerMessageBuilder($value['stamp_package_id'],$value['stamp_id']);
       break;
     case "image":
-      $value['thumimg_name']= 's_'.$value['img_name'];
-      $msg = new LINE\LINEBot\MessageBuilder\ImageMessageBuilder(IMAGE_DIR.$value['img_name'],IMAGE_DIR.$value['thumimg_name']);
+      $value['thumimg_name']= 's_'.$value['file_name'];
+      $msg = new LINE\LINEBot\MessageBuilder\ImageMessageBuilder(IMAGE_DIR.$value['file_name'],IMAGE_DIR.$value['thumimg_name']);
       break;
     case "audio":
-      $msg = new LINE\LINEBot\MessageBuilder\AudioMessageBuilder(AUDIO_DIR.$value['img_name'],$value['stamp_id']);
+      $msg = new LINE\LINEBot\MessageBuilder\AudioMessageBuilder(AUDIO_DIR.$value['file_name'],$value['stamp_id']);
       break;
     case "button":
     case "button_q":
@@ -484,10 +484,10 @@ function getSenarioRows($text,$label) {
   return $text;
 }
 
-//メッセージ（ヒント）データ取得
+//キーワードメッセージ（ヒント）データ取得
 function getMessageRows($text,$keyword) {
   $dbh = dbConnection::getConnection();
-  $sql = 'select * from ' . TABLE_NAME_MESSAGE . ' where keyword = ? order by no';
+  $sql = 'select * from ' . TABLE_NAME_KEYWORD . ' where keyword = ? order by no';
   $sth = $dbh->prepare($sql);
   $sth->execute(array($keyword));
 
