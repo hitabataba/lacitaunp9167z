@@ -289,14 +289,14 @@ class dbConnection {
 
 ?>
 
-<form action="upload.php" method="post" enctype="multipart/form-data">
+<form action="<?php echo(__FILE__); ?>" method="post" enctype="multipart/form-data">
   CSVファイル：<br />
   <input type="file" name="csvfile" size="30" /><br />
   <input type="submit" value="シナリオcsv アップロード" />
   <input type="hidden" name="datakind" value="senario" />
 </form>
 
-<form action="upload.php" method="post" enctype="multipart/form-data">
+<form action="<?php echo(__FILE__); ?>" method="post" enctype="multipart/form-data">
   CSVファイル：<br />
   <input type="file" name="csvfile" size="30" /><br />
   <input type="submit" value="キーワードメッセージcsv アップロード" />
