@@ -50,6 +50,8 @@ if (is_uploaded_file($_FILES["csvfile"]["tmp_name"])) {
       $i=0;
       //配列に変換する
       while (($line = fgetcsv($fp, 0, ",")) !== FALSE) {
+echo("にら");
+var_dump($line);
         switch($i){
         case 0:
           $header = $line;
@@ -95,8 +97,6 @@ if (is_uploaded_file($_FILES["csvfile"]["tmp_name"])) {
   $err_msg[] = "ファイルを選択してください。";
 }
 
-echo("にら");
-var_dump($data);
 if($data){
   foreach($data as $text){
     $lc = 1;
