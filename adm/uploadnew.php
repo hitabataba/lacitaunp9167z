@@ -23,11 +23,13 @@ if (is_uploaded_file($_FILES["csvfile"]["tmp_name"])) {
   switch($filekind){
     case "keyword":
       $filekind_name = "キーワードメッセージ";
+      $first_column = "keyword";
       $target_table  = TABLE_NAME_KEYWORD;
       break;
     case "senario":
     default:
       $filekind_name = "シナリオ";
+      $first_column = "label";
       $target_table  = TABLE_NAME_SCENARIO;
       break;
   }
@@ -74,7 +76,7 @@ if (is_uploaded_file($_FILES["csvfile"]["tmp_name"])) {
               }
               $fc++;
             }
-            if(trim($form_line['format'])){
+            if(trim($form_line[$format])){
               $data[$line[0]][] = $form_line;
             }
           }
@@ -98,15 +100,13 @@ if($data){
     $lc = 1;
     foreach($text as $t){
 
-      if($filekind=="scenario"){
-        $vali_head = $vali_head;
-      }else if($filekind=="keyword"){
-        $vali_head = "keyword:".$t['keyword']."の";
-      }
+      $vali_head = $first_column.":".$t[$first_column]."の";
 
-      if(is_null($t['label']) || trim($t['label']) == ""){
+/*
+      if(is_null($t[$first_column]) || trim($t[$first_column]) == ""){
         $err_msg[] = $vali_head.$lc."行目→formatがtextですが、textがありません。";
       }
+*/
       if($t['format']=="text" && is_null($t['text'])){
         $err_msg[] = $vali_head.$lc."行目→formatがtextですが、textがありません。";
       }
@@ -229,10 +229,10 @@ if(!$err_msg){
     foreach($data as $text){
       foreach($text as $t){
         $sql = "insert into ". $target_table .
-        " (label,no,format,text,file_name,file_property,button_text_1,button_flg_1,button_condition_1,button_text_2,button_flg_2,button_condition_2,button_text_3,button_flg_3,button_condition_3,button_text_4,button_flg_4,button_condition_4,nazo_seikai,nazo_flg_1,nazo_flg_2,stamp_package_id,stamp_id) ".
+        " (".$first_column.",no,format,text,file_name,file_property,button_text_1,button_flg_1,button_condition_1,button_text_2,button_flg_2,button_condition_2,button_text_3,button_flg_3,button_condition_3,button_text_4,button_flg_4,button_condition_4,nazo_seikai,nazo_flg_1,nazo_flg_2,stamp_package_id,stamp_id) ".
         " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         $sth = $dbh->prepare($sql);
-        $sth->execute(array(trim($t['label']),$t['no'],$t['format'],$t['text'],$t['file_name'],$t['file_property'],$t['button_text_1'],trim($t['button_flg_1']),trim($t['button_condition_1']),$t['button_text_2'],trim($t['button_flg_2']),trim($t['button_condition_2']),$t['button_text_3'],trim($t['button_flg_3']),trim($t['button_condition_3']),$t['button_text_4'],trim($t['button_flg_4']),trim($t['button_condition_4']),$t['nazo_seikai'],trim($t['nazo_flg_1']),trim($t['nazo_flg_2']),(int)$t['stamp_package_id'],(int)$t['stamp_id']));
+        $sth->execute(array(trim($t[$first_column]),$t['no'],$t['format'],$t['text'],$t['file_name'],$t['file_property'],$t['button_text_1'],trim($t['button_flg_1']),trim($t['button_condition_1']),$t['button_text_2'],trim($t['button_flg_2']),trim($t['button_condition_2']),$t['button_text_3'],trim($t['button_flg_3']),trim($t['button_condition_3']),$t['button_text_4'],trim($t['button_flg_4']),trim($t['button_condition_4']),$t['nazo_seikai'],trim($t['nazo_flg_1']),trim($t['nazo_flg_2']),(int)$t['stamp_package_id'],(int)$t['stamp_id']));
       }
     }
     $dbh->commit();
