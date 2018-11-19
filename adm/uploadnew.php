@@ -95,6 +95,8 @@ if (is_uploaded_file($_FILES["csvfile"]["tmp_name"])) {
   $err_msg[] = "ファイルを選択してください。";
 }
 
+echo("にら");
+var_dump($data);
 if($data){
   foreach($data as $text){
     $lc = 1;
