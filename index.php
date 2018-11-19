@@ -496,8 +496,8 @@ $count = 0;
     while($row){
       $text[$row['no']] = $row;
 $count++;
-var_log($count);
-var_log($text);
+var_dump($count);
+var_dump($text);
 if($count>10){
 break;
 }
