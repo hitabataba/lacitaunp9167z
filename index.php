@@ -556,7 +556,7 @@ function checkFlgCondition($progress,$flgtext) {
     }
     return false;
   }else{
-    return checkFlgConditionPart($progress,$f);
+    return checkFlgConditionPart($progress,$flgtext);
   }
 }
 
