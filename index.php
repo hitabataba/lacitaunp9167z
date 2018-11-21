@@ -536,6 +536,7 @@ function getMessageRows($text,$keyword) {
 
 //フラグチェック
 function checkFlgCondition($progress,$flgcondition) {
+
   if(!$flgcondition){
     return true;
   }
@@ -562,8 +563,12 @@ function checkFlgCondition($progress,$flgcondition) {
     }else{
       return false;
     }
-  }  else if(strpos($flgcondition,"=")!==false){
+  }
+  else if(strpos($flgcondition,"=")!==false){
     list($flgname,$flgnum) = explode("=",$flgcondition);
+error_log("flgname:".$flgname);
+error_log("flgnum:".$flgnum);
+error_log("$progress[$flgname]".$progress[$flgname]);
     if(isset($progress[$flgname]) && ((int)$progress[$flgname] == (int)$flgnum) ){
       return true;
     }else{
