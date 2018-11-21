@@ -504,7 +504,7 @@ function getProgressDataByUserId($userId) {
     return PDO::PARAM_NULL;
   } else {
 //     進捗状況を返す
-error_log(json_decode($row['progress']));
+error_log(var_dump(json_decode($row['progress'])));
     return json_decode($row['progress']);
   }
 }
