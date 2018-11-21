@@ -1,4 +1,8 @@
 <?php
+//20181120
+//progress が jsonb
+//image が file 
+
 setlocale(LC_ALL, 'ja_JP.UTF-8');
 
 // Composerでインストールしたライブラリを一括読み込み
@@ -500,6 +504,7 @@ function getProgressDataByUserId($userId) {
     return PDO::PARAM_NULL;
   } else {
 //     進捗状況を返す
+error_log(json_decode($row['progress']));
     return json_decode($row['progress']);
   }
 }
