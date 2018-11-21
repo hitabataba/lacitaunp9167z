@@ -568,7 +568,7 @@ function checkFlgCondition($progress,$flgcondition) {
     list($flgname,$flgnum) = explode("=",$flgcondition);
 error_log("flgname:".$flgname);
 error_log("flgnum:".$flgnum);
-error_log("$progress[$flgname]".$progress[$flgname]);
+error_log(var_dump($progress));
     if(isset($progress[$flgname]) && ((int)$progress[$flgname] == (int)$flgnum) ){
       return true;
     }else{
