@@ -167,14 +167,6 @@ error_log($progress[0]);
         foreach($text as $val){
           $messages[] = $val;
         }
-    }else if($event->getText()=='受信' || $event->getText()=='【受信】' || $event->getText()=='別の未来' || $event->getText()=='【別の未来】'){
-      $progress[0] = "TXT10_99";
-      updateUser($event->getUserId(), json_encode($progress));
-
-      $text = getSenarioRows($text,$progress[0]);
-      foreach($text[$progress[0]] as $val){
-        $messages[] = $val;
-      }
     }else{
       $nazoline_check = false;
 
@@ -276,36 +268,39 @@ if($messages){
 //フラグ処理
   foreach($messages as $m){
     if($m["flg"]){
-      list($flgname,$flgprocess) = explode("]",$m["flg"]);
-      $flgprcsing = substr($flgprocess,0,1);
-      $flgprcnum = (int)substr($flgprocess,1);
-      
-      if(!isset($progress[$flgname])){
-        $progress[$flgname] = 0;
+      unset($flgname);
+      if(strpos($m["flg"], '+', 1)){
+        list($flgname,$flgprcnum) = explode("+",$m["flg"]);
+        $flgprcnum = (int)$flgprcnum;
+        $progress[$flgname] = $progress[$flgname] + $flgprcnum;
       }
-      switch($flgprcsing){
-        case "+":
-          $progress[$flgname] = $progress[$flgname] + $flgprcnum;
-          break;
-        case "-":
-          $progress[$flgname] = $progress[$flgname] - $flgprcnum;
-          break;
-        case "*":
-          $progress[$flgname] = $progress[$flgname] * $flgprcnum;
-          break;
-        case "=":
-          $progress[$flgname] = $flgprcnum;
-          break;
-        default:
-          break;
+      else if(strpos($m["flg"], '-', 1)){
+        list($flgname,$flgprcnum) = explode("-",$m["flg"]);
+        $flgprcnum = (int)$flgprcnum;
+        $progress[$flgname] = $progress[$flgname] - $flgprcnum;
       }
-      updateUser($event->getUserId(), json_encode($progress));
+      else if(strpos($m["flg"], '*', 1)){
+        list($flgname,$flgprcnum) = explode("*",$m["flg"]);
+        $flgprcnum = (int)$flgprcnum;
+        $progress[$flgname] = $progress[$flgname] * $flgprcnum;
+      }
+      else if(strpos($m["flg"], '=', 1)){
+        list($flgname,$flgprcnum) = explode("=",$m["flg"]);
+        $flgprcnum = (int)$flgprcnum;
+        $progress[$flgname] = $flgprcnum;
+      }
+      if(isset($flgname)){
+        if($progress[$flgname] > 1000000){
+          $progress[$flgname] = 1000000;
+        }
+        if($progress[$flgname] < -1000000){
+          $progress[$flgname] = -1000000;
+        }
+      }
     }
+    updateUser($event->getUserId(), json_encode($progress));
   }
-
 }
-
-
 
 
 
@@ -504,7 +499,6 @@ function getProgressDataByUserId($userId) {
     return PDO::PARAM_NULL;
   } else {
 //     進捗状況を返す
-error_log(var_dump(json_decode($row['progress']),true));
     return json_decode($row['progress'],true);
   }
 }
@@ -539,8 +533,36 @@ function getMessageRows($text,$keyword) {
   }
 }
 
-//フラグチェック
-function checkFlgCondition($progress,$flgcondition) {
+//フラグチェック(AND/OR含めて評価）
+function checkFlgCondition($progress,$flgtext) {
+  $flgtext = trim($flgtext);
+  if(!$flgtext){
+    return true;
+  }
+  if(substr($flgtext, 0, 4) === "AND(" && substr($flgtext, -1) === ")"){
+    $flgconditions = explode(",", trim(rtrim(ltrim($flgtext,"AND("),")")));
+    foreach($flgconditions as $f){
+      if(!checkFlgConditionPart($progress,$f)){
+        return false;
+      }
+    }
+    return true;
+  }else if(substr($flgtext, 0, 3) === "OR(" && substr($flgtext, -1) === ")"){
+    $flgconditions = explode(",", trim(rtrim(ltrim($flgtext,"OR("),")")));
+    foreach($flgconditions as $f){
+      if(checkFlgConditionPart($progress,$f)){
+        return true;
+      }
+    }
+    return false;
+  }else{
+    return checkFlgConditionPart($progress,$f);
+  }
+}
+
+
+//フラグチェック(個々の条件チェック）
+function checkFlgConditionPart($progress,$flgcondition) {
 
   if(!$flgcondition){
     return true;
@@ -571,9 +593,6 @@ function checkFlgCondition($progress,$flgcondition) {
   }
   else if(strpos($flgcondition,"=")!==false){
     list($flgname,$flgnum) = explode("=",$flgcondition);
-error_log("flgname:".$flgname);
-error_log("flgnum:".$flgnum);
-error_log(var_dump($progress));
     if(isset($progress[$flgname]) && ((int)$progress[$flgname] == (int)$flgnum) ){
       return true;
     }else{
@@ -596,8 +615,9 @@ error_log(var_dump($progress));
       return false;
     }
   }
-
-
+  else{
+    return false;
+  }
 }
 
 // ユーザーIDを元にデータベースからシリアル登録状況を取得
