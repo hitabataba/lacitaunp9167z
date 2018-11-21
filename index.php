@@ -268,7 +268,7 @@ error_log($progress[0]);
 
 //メッセージの送信
 if($messages){
-  replyMultiMessage($bot, $event->getReplyToken(), $messages, $profile);
+  replyMultiMessage($bot, $event->getReplyToken(), $messages, $profile, $progress);
 //フラグ処理
   foreach($messages as $m){
     if($m["flg"]){
@@ -329,7 +329,7 @@ function replyImageMessage($bot, $replyToken, $originalImageUrl, $previewImageUr
 // 複数のメッセージをまとめて返信。引数はLINEBot、
 // 返信先、メッセージ(可変長引数)
 //function replyMultiMessage($bot, $replyToken, ...$msgs) {
-function replyMultiMessage($bot, $replyToken, $msgs, $profile) {
+function replyMultiMessage($bot, $replyToken, $msgs, $profile,$progress) {
   // MultiMessageBuilderをインスタンス化
   $builder = new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder();
   // ビルダーにメッセージを全て追加
