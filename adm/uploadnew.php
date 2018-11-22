@@ -229,10 +229,10 @@ if(!$err_msg){
     foreach($data as $text){
       foreach($text as $t){
         $sql = "insert into ". $target_table .
-        " (".$first_column.",no,format,text,file_name,file_property,button_text_1,button_flg_1,button_condition_1,button_text_2,button_flg_2,button_condition_2,button_text_3,button_flg_3,button_condition_3,button_text_4,button_flg_4,button_condition_4,nazo_seikai,nazo_flg_1,nazo_flg_2,stamp_package_id,stamp_id,flg) ".
-        " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+        " (".$first_column.",no,format,text,file_name,file_property,button_text_1,button_flg_1,button_condition_1,button_text_2,button_flg_2,button_condition_2,button_text_3,button_flg_3,button_condition_3,button_text_4,button_flg_4,button_condition_4,nazo_seikai,nazo_flg_1,nazo_flg_2,stamp_package_id,stamp_id,target_flg_flg,add_flg) ".
+        " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         $sth = $dbh->prepare($sql);
-        $sth->execute(array(trim($t[$first_column]),$t['no'],$t['format'],$t['text'],$t['file_name'],$t['file_property'],$t['button_text_1'],trim($t['button_flg_1']),trim($t['button_condition_1']),$t['button_text_2'],trim($t['button_flg_2']),trim($t['button_condition_2']),$t['button_text_3'],trim($t['button_flg_3']),trim($t['button_condition_3']),$t['button_text_4'],trim($t['button_flg_4']),trim($t['button_condition_4']),$t['nazo_seikai'],trim($t['nazo_flg_1']),trim($t['nazo_flg_2']),(int)$t['stamp_package_id'],(int)$t['stamp_id'],trim($t['flg'])));
+        $sth->execute(array(trim($t[$first_column]),$t['no'],$t['format'],$t['text'],$t['file_name'],$t['file_property'],$t['button_text_1'],trim($t['button_flg_1']),trim($t['button_condition_1']),$t['button_text_2'],trim($t['button_flg_2']),trim($t['button_condition_2']),$t['button_text_3'],trim($t['button_flg_3']),trim($t['button_condition_3']),$t['button_text_4'],trim($t['button_flg_4']),trim($t['button_condition_4']),$t['nazo_seikai'],trim($t['nazo_flg_1']),trim($t['nazo_flg_2']),(int)$t['stamp_package_id'],(int)$t['stamp_id'],trim($t['target_flg']),trim($t['add_flg'])));
       }
     }
     $dbh->commit();

@@ -267,25 +267,25 @@ if($messages){
   replyMultiMessage($bot, $event->getReplyToken(), $messages, $profile, $progress);
 //フラグ処理
   foreach($messages as $m){
-    if($m["flg"]){
+    if($m["add_flg"] && checkFlgCondition($progress,$m['target_flg'])){
       unset($flgname);
-      if(strpos($m["flg"], '+', 1)){
-        list($flgname,$flgprcnum) = explode("+",$m["flg"]);
+      if(strpos($m["add_flg"], '+', 1)){
+        list($flgname,$flgprcnum) = explode("+",$m["add_flg"]);
         $flgprcnum = (int)$flgprcnum;
         $progress[$flgname] = $progress[$flgname] + $flgprcnum;
       }
-      else if(strpos($m["flg"], '-', 1)){
-        list($flgname,$flgprcnum) = explode("-",$m["flg"]);
+      else if(strpos($m["add_flg"], '-', 1)){
+        list($flgname,$flgprcnum) = explode("-",$m["add_flg"]);
         $flgprcnum = (int)$flgprcnum;
         $progress[$flgname] = $progress[$flgname] - $flgprcnum;
       }
-      else if(strpos($m["flg"], '*', 1)){
-        list($flgname,$flgprcnum) = explode("*",$m["flg"]);
+      else if(strpos($m["add_flg"], '*', 1)){
+        list($flgname,$flgprcnum) = explode("*",$m["add_flg"]);
         $flgprcnum = (int)$flgprcnum;
         $progress[$flgname] = $progress[$flgname] * $flgprcnum;
       }
-      else if(strpos($m["flg"], '=', 1)){
-        list($flgname,$flgprcnum) = explode("=",$m["flg"]);
+      else if(strpos($m["add_flg"], '=', 1)){
+        list($flgname,$flgprcnum) = explode("=",$m["add_flg"]);
         $flgprcnum = (int)$flgprcnum;
         $progress[$flgname] = $flgprcnum;
       }
@@ -333,10 +333,11 @@ function replyMultiMessage($bot, $replyToken, $msgs, $profile,$progress) {
   $builder = new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder();
   // ビルダーにメッセージを全て追加
   foreach($msgs as $json_msg) {
-//    $value = json_decode($json_msg,true);
     $value = $json_msg;
     $msg = null;
-
+    if(!checkFlgCondition($progress,$value['target_flg'])){
+       continue 1;
+    }
     switch($value['format']){
     case "text":
     case "nazo":
@@ -569,7 +570,10 @@ function checkFlgConditionPart($progress,$flgcondition) {
   }
   if(strpos($flgcondition,">=")!==false){
     list($flgname,$flgnum) = explode(">=",$flgcondition);
-    if(isset($progress[$flgname]) && ((int)$progress[$flgname] >= (int)$flgnum) ){
+    if(!isset($progress[$flgname])){
+      $progress[$flgname] = 0;
+    }
+    if((int)$progress[$flgname] >= (int)$flgnum){
       return true;
     }else{
       return false;
@@ -577,15 +581,32 @@ function checkFlgConditionPart($progress,$flgcondition) {
   }
   else if(strpos($flgcondition,"<=")!==false){
     list($flgname,$flgnum) = explode("<=",$flgcondition);
-    if(isset($progress[$flgname]) && ((int)$progress[$flgname] <= (int)$flgnum) ){
+    if(!isset($progress[$flgname])){
+      $progress[$flgname] = 0;
+    }
+    if((int)$progress[$flgname] <= (int)$flgnum){
       return true;
     }else{
       return false;
     }
   }
+  else if(strpos($flgcondition,"!=")!==false){
+    list($flgname,$flgnum) = explode("!=",$flgcondition);
+    if(!isset($progress[$flgname])){
+      $progress[$flgname] = 0;
+    }
+    if((int)$progress[$flgname] == (int)$flgnum){
+      return false;
+    }else{
+      return true;
+    }
+  }
   else if(strpos($flgcondition,"==")!==false){
     list($flgname,$flgnum) = explode("==",$flgcondition);
-    if(isset($progress[$flgname]) && ((int)$progress[$flgname] == (int)$flgnum) ){
+    if(!isset($progress[$flgname])){
+      $progress[$flgname] = 0;
+    }
+    if((int)$progress[$flgname] == (int)$flgnum){
       return true;
     }else{
       return false;
@@ -593,7 +614,10 @@ function checkFlgConditionPart($progress,$flgcondition) {
   }
   else if(strpos($flgcondition,"=")!==false){
     list($flgname,$flgnum) = explode("=",$flgcondition);
-    if(isset($progress[$flgname]) && ((int)$progress[$flgname] == (int)$flgnum) ){
+    if(!isset($progress[$flgname])){
+      $progress[$flgname] = 0;
+    }
+    if((int)$progress[$flgname] == (int)$flgnum){
       return true;
     }else{
       return false;
@@ -601,7 +625,10 @@ function checkFlgConditionPart($progress,$flgcondition) {
   }
   else if(strpos($flgcondition,">")!==false){
     list($flgname,$flgnum) = explode(">",$flgcondition);
-    if(isset($progress[$flgname]) && ((int)$progress[$flgname] > (int)$flgnum) ){
+    if(!isset($progress[$flgname])){
+      $progress[$flgname] = 0;
+    }
+    if((int)$progress[$flgname] > (int)$flgnum){
       return true;
     }else{
       return false;
@@ -609,7 +636,10 @@ function checkFlgConditionPart($progress,$flgcondition) {
   }
   else if(strpos($flgcondition,"<")!==false){
     list($flgname,$flgnum) = explode("<",$flgcondition);
-    if(isset($progress[$flgname]) && ((int)$progress[$flgname] < (int)$flgnum) ){
+    if(!isset($progress[$flgname])){
+      $progress[$flgname] = 0;
+    }
+    if((int)$progress[$flgname] < (int)$flgnum){
       return true;
     }else{
       return false;
