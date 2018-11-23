@@ -551,6 +551,7 @@ function checkFlgCondition($progress,$flgtext) {
   }else if(substr($flgtext, 0, 3) === "OR(" && substr($flgtext, -1) === ")"){
     $flgconditions = explode(",", trim(rtrim(ltrim($flgtext,"OR("),")")));
     foreach($flgconditions as $f){
+error_log($f);
       if(checkFlgConditionPart($progress,$f)){
         return true;
       }
