@@ -552,7 +552,6 @@ function checkFlgCondition($progress,$flgtext) {
     $flgconditions = explode(",", trim(rtrim(ltrim($flgtext,"OR("),")")));
     foreach($flgconditions as $f){
       if(checkFlgConditionPart($progress,$f)){
-error_log($f);
         return true;
       }
     }
