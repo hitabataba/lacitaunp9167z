@@ -52,7 +52,7 @@ $messages = array();
 
 $events = array();
 $events[0]=array(
-  'event' =>array(
+//  'event' =>array(
     'type' => 'postback',
     'replyToken' => '0d963b9e1eb74627b75f6f656056c07c',
     'source' => 
@@ -65,7 +65,7 @@ $events[0]=array(
      array (
        'data' => 'フラグつけ1$スタートへ$',
      ),
-  ),
+//  ),
 );
 
 
