@@ -51,7 +51,7 @@ $messages = array();
 // 配列に格納された各イベントをループで処理
 
 $events = array();
-$events[0]=LINE\LINEBot\Event\PostbackEvent::__set_state(array(
+$events[0]=\LINE\LINEBot\Event\PostbackEvent::__set_state(array(
   'event' =>array(
     'type' => 'postback',
     'replyToken' => '0d963b9e1eb74627b75f6f656056c07c',
