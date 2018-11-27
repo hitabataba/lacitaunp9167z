@@ -28,7 +28,7 @@ $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET
 // LINE Messaging APIがリクエストに付与した署名を取得
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
 
-
+/*
 // 署名が正当かチェック。正当であればリクエストをパースし配列へ
 // 不正であれば例外の内容を出力
 try {
@@ -42,12 +42,32 @@ try {
 } catch(\LINE\LINEBot\Exception\InvalidEventRequestException $e) {
   error_log('parseEventRequest failed. InvalidEventRequestException => '.var_export($e, true));
 }
+*/
 
 //シナリオデータ
 $text = array();
 
 $messages = array();
 // 配列に格納された各イベントをループで処理
+
+$events = array();
+$events[0]=array(
+  'event' =>array(
+    'type' => 'postback',
+    'replyToken' => '0d963b9e1eb74627b75f6f656056c07c',
+    'source' => 
+     array (
+       'userId' => 'Ub5576ea6e5b3167496d634fa32f2bbf1',
+       'type' => 'user',
+     ),
+    'timestamp' => 1543337452104,
+    'postback' => 
+     array (
+       'data' => 'フラグつけ1$スタートへ$',
+     ),
+  ),
+);
+
 
 if(!$events){
   error_log('No Events Access');
