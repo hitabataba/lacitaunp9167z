@@ -32,7 +32,7 @@ $.ajax({
 //成功した場合はjson構造体の配列に格納される
     $.each(json, function(property, value) {
       addRow(form_html);
-    }
+    })
     //出力する部分
     $('#result').html(json);
   },
