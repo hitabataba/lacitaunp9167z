@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+
+    <title>謎解きbot シナリオ入力フォーム</title>
+    
+    <meta name="robots" content="noarchive">
+
+   <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/sunny/jquery-ui.css">
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+<script>
+$(function() {
+  var form_html = $('#scenario_table').html();
+
+  $('button[name="addform"]').click(function() {
+    var newRowno = parseInt($("#scenario_table:last tr").attr('rowno'));
+    $("#scenario_table:last").append(form_html);
+    $("#scenario_table tr:last").attr('rowno',newRowno+1);
+    $('#scenario_table tr:last .none').hide();
+    $('#scenario_table tr:last .sel_image').hide();
+    $('#scenario_table tr:last .sel_button').hide();
+  })
+  $('.none').hide();
+  $('.sel_image').hide();
+  $('.sel_button').hide();
+
+  $(document).on('change', 'select[name="format"]', function(){
+
+//    var rowno = parseInt($(this).closest('tr').attr('rowno'));
+    switch($(this).find('option:selected').val()){
+    case 'text':
+      $(this).closest('tr').find('.sel_text').show();
+      $(this).closest('tr').find('.sel_image').hide();
+      $(this).closest('tr').find('.sel_button').hide();
+      break;
+    case 'image':
+      $(this).closest('tr').find('.sel_text').hide();
+      $(this).closest('tr').find('.sel_image').show();
+      $(this).closest('tr').find('.sel_button').hide();
+      break;
+    case 'button':
+      $(this).closest('tr').find('.sel_text').hide();
+      $(this).closest('tr').find('.sel_image').hide();
+      $(this).closest('tr').find('.sel_button').show();
+      break;
+    case 'button_q':
+      $(this).closest('tr').find('.sel_text').hide();
+      $(this).closest('tr').find('.sel_image').hide();
+      $(this).closest('tr').find('.sel_button').show();
+      break;
+    case 'branch_2':
+      $(this).closest('tr').find('.sel_text').hide();
+      $(this).closest('tr').find('.sel_image').hide();
+      $(this).closest('tr').find('.sel_button').hide();
+      $(this).closest('tr').find('.sel_branch_2').show();
+      break;
+    case 'branch':
+      $(this).closest('tr').find('.sel_text').hide();
+      $(this).closest('tr').find('.sel_image').hide();
+      $(this).closest('tr').find('.sel_button').hide();
+      $(this).closest('tr').find('.sel_branch').show();
+      break;
+    default:
+      break;
+    }
+  })
+})
+
+</script>
+
+<style>
+#scenario_table td{
+  border:solid #000000 1px;
+  padding:5px;
+}
+td.tbl_head {
+  width:350px;
+}
+td.tbl_center {
+  width:800px;
+}
+td.tbl_tail {
+  width:100px;
+}
+input[name="label"]{
+  width: 10em;
+}
+input[name="no"]{
+  width: 2em;
+}
+input[name="text"]{
+  width: 59em;
+}
+input[name="image"]{
+  width: 30em;
+}
+</style>
+
+
+  </head>
+  <body>
+
+<table id="scenario_table">
+<tr rowno="1">
+<form>
+<td class="tbl_head">
+  <input type="text" name="label" placeholder="ラベル">
+  <input type="text" name="no" placeholder="">
+  <select name="format">
+    <option value="text">テキスト</option>
+    <option value="image">画像</option>
+    <option value="button">ボタン選択肢</option>
+    <option value="button_q">アンケート</option>
+    <option value="branch_2">クイズ</option>
+    <option value="branch">自由回答内容で分岐</option>
+  </select>
+</td>
+<td class="tbl_center">
+  <div class="sel_text">吹き出しテキスト</div>
+  <input type="text" class="sel_text" name="text">
+  <div class="sel_image">画像ファイル名</div>
+  <input type="text" class="sel_image" name="file_name">
+  <input type="text" class="none" name="file_property">
+  <div class="sel_button" style="display:inline-flex">
+    <div class="sel_button">ボタン1名称(20字まで)</div>
+    <input type="text" class="sel_button sel_branch_2" name="button_text_1">
+    <div class="sel_button">　ボタン1飛び先ラベル</div>
+    <input type="text" class="sel_button sel_branch_2" name="button_flg_1">
+    <input type="text" class="none" name="button_condition_1">
+  </div>
+  <div class="sel_button" style="display:inline-flex">
+    <div class="sel_button">ボタン2名称(20字まで)</div>
+    <input type="text" class="sel_button  sel_branch" name="button_text_2">
+    <div class="sel_button">　ボタン2飛び先ラベル</div>
+    <input type="text" class="sel_button  sel_branch" name="button_flg_2">
+    <input type="text" class="none" name="button_condition_2">
+  </div>
+  <div class="sel_button" style="display:inline-flex">
+    <div class="sel_button">ボタン3名称(20字まで)</div>
+    <input type="text" class="sel_button  sel_branch" name="button_text_3">
+    <div class="sel_button">　ボタン3飛び先ラベル</div>
+    <input type="text" class="sel_button  sel_branch" name="button_flg_3">
+    <input type="text" class="none" name="button_condition_3">
+  </div>
+  <div class="sel_button" style="display:inline-flex">
+    <div class="sel_button">ボタン4名称(20字まで)</div>
+    <input type="text" class="sel_button" name="button_text_4">
+    <div class="sel_button">　ボタン4飛び先ラベル</div>
+    <input type="text" class="sel_button sel_branch_2" name="button_flg_4">
+    <input type="text" class="none" name="button_condition_4">
+  </div>
+  <input type="text" class="none" name="target_flg">
+  <input type="text" class="none" name="add_flg">
+</td>
+<td class="tbl_tail">
+  <input type="button" value="登録">
+</td>
+</form>
+</tr>
+
+
+</table>
+
+<button type="button" name="addform">行追加</button>
+
+  </body>
+</html>
