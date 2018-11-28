@@ -33,7 +33,7 @@ $.ajax({
       addRow(form_html);
       $.each(json_c, function(prop, value) {
       console.log('#scenario_table tr:last[name="'+prop+'"] '+ "|" + value );
-        $('#scenario_table tr:last[name="'+prop+'"] ').val(value);
+        $('#scenario_table tr:last input[name="'+prop+'"] ').val(value);
 
       })
     })
@@ -106,6 +106,7 @@ function addRow (form_html) {
     $('#scenario_table tr:last .none').hide();
     $('#scenario_table tr:last .sel_image').hide();
     $('#scenario_table tr:last .sel_button').hide();
+
 }
 
 </script>
