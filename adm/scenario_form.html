@@ -31,8 +31,8 @@ $.ajax({
 //成功した場合はjson構造体の配列に格納される
     $.each(json, function(property, json_c) {
       addRow(form_html);
-      console.log(json_c);
       $.each(json_c, function(prop, value) {
+      console.log('#scenario_table tr:last[name='+prop+'] '+ "|" + value );
         $('#scenario_table tr:last[name='+prop+'] ').val(value);
 
       })
