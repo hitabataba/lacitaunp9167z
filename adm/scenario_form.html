@@ -21,12 +21,10 @@
 $(function() {
   var form_html = $('#scenario_table').html();
 
-/*
   $('.none').hide();
   $('.sel_image').hide();
   $('.sel_button').hide();
   $('.sel_text').show();
-*/
 
 $.ajax({
   type: "POST",
@@ -40,7 +38,7 @@ $.ajax({
       $.each(json_c, function(prop, value) {
         $('#scenario_table tr:last input[name="'+prop+'"] ').val(value);
 	if(prop == "format"){
-          $('#scenario_table tr:last select[name="format"] ').val(value);
+          $('#scenario_table tr:last select[name="format"] ').val(value).toggleRow();
         }
       })
       addRow(form_html);
@@ -64,56 +62,72 @@ $.ajax({
   })
 
   $(document).on('change', 'select[name="format"]', function(){
+    $(this).toggleRow();
+  })
 
-//    var rowno = parseInt($(this).closest('tr').attr('rowno'));
+  $.fn.toggleRow = function() {
     switch($(this).find('option:selected').val()){
     case 'text':
       $(this).closest('tr').find('.sel_image').hide();
       $(this).closest('tr').find('.sel_button').hide();
+      $(this).closest('tr').find('.sel_branch').hide();
+      $(this).closest('tr').find('.sel_branch_2').hide();
       $(this).closest('tr').find('.sel_text').show();
       break;
     case 'image':
       $(this).closest('tr').find('.sel_text').hide();
       $(this).closest('tr').find('.sel_button').hide();
+      $(this).closest('tr').find('.sel_branch').hide();
+      $(this).closest('tr').find('.sel_branch_2').hide();
       $(this).closest('tr').find('.sel_image').show();
       break;
     case 'button':
       $(this).closest('tr').find('.sel_image').hide();
+      $(this).closest('tr').find('.sel_branch').hide();
+      $(this).closest('tr').find('.sel_branch_2').hide();
       $(this).closest('tr').find('.sel_text').show();
       $(this).closest('tr').find('.sel_button').show();
       break;
     case 'button_q':
       $(this).closest('tr').find('.sel_image').hide();
+      $(this).closest('tr').find('.sel_branch').hide();
+      $(this).closest('tr').find('.sel_branch_2').hide();
       $(this).closest('tr').find('.sel_text').show();
       $(this).closest('tr').find('.sel_button').show();
       break;
     case 'branch_2':
       $(this).closest('tr').find('.sel_image').hide();
       $(this).closest('tr').find('.sel_button').hide();
+      $(this).closest('tr').find('.sel_branch').hide();
       $(this).closest('tr').find('.sel_text').show();
       $(this).closest('tr').find('.sel_branch_2').show();
       break;
     case 'branch':
       $(this).closest('tr').find('.sel_image').hide();
       $(this).closest('tr').find('.sel_button').hide();
+      $(this).closest('tr').find('.sel_branch_2').hide();
       $(this).closest('tr').find('.sel_text').show();
       $(this).closest('tr').find('.sel_branch').show();
       break;
     default:
       break;
     }
-  })
-})
+    return this;
+  }
 
-function addRow (form_html) {
+  function addRow (form_html) {
     var newRowno = parseInt($("#scenario_table:last tr").attr('rowno'));
     $("#scenario_table:last").append(form_html);
     $("#scenario_table tr:last").attr('rowno',newRowno+1);
     $('#scenario_table tr:last .none').hide();
     $('#scenario_table tr:last .sel_image').hide();
     $('#scenario_table tr:last .sel_button').hide();
+  }
 
-}
+})
+
+
+
 
 </script>
 
@@ -176,32 +190,42 @@ input[name="image"]{
   <div class="sel_image">画像ファイル名</div>
   <input type="text" class="sel_image" name="file_name">
   <input type="text" class="none" name="file_property">
-  <div class="sel_button" style="display:inline-flex">
+  <div class="sel_button sel_branch sel_branch_2" style="display:inline-flex">
     <div class="sel_button">ボタン1名称(20字まで)</div>
-    <input type="text" class="sel_button sel_branch_2" name="button_text_1">
+    <div class="sel_branch_2">　正解キーワード</div>
+    <div class="sel_branch">　キーワード1</div>
+    <input type="text" class="sel_button sel_branch sel_branch_2" name="button_text_1">
     <div class="sel_button">　ボタン1飛び先ラベル</div>
-    <input type="text" class="sel_button sel_branch_2" name="button_flg_1">
+    <div class="sel_branch_2">　正解時飛び先ラベル</div>
+    <div class="sel_branch">　キーワード1時の飛び先ラベル</div>
+    <input type="text" class="sel_button sel_branch sel_branch_2" name="button_flg_1">
     <input type="text" class="none" name="button_condition_1">
   </div>
-  <div class="sel_button" style="display:inline-flex">
+  <div class="sel_button sel_branch" style="display:inline-flex">
     <div class="sel_button">ボタン2名称(20字まで)</div>
+    <div class="sel_branch">　キーワード2</div>
     <input type="text" class="sel_button  sel_branch" name="button_text_2">
     <div class="sel_button">　ボタン2飛び先ラベル</div>
+    <div class="sel_branch">　キーワード2時の飛び先ラベル</div>
     <input type="text" class="sel_button  sel_branch" name="button_flg_2">
     <input type="text" class="none" name="button_condition_2">
   </div>
-  <div class="sel_button" style="display:inline-flex">
+  <div class="sel_button sel_branch" style="display:inline-flex">
     <div class="sel_button">ボタン3名称(20字まで)</div>
+    <div class="sel_branch">　キーワード3</div>
     <input type="text" class="sel_button  sel_branch" name="button_text_3">
     <div class="sel_button">　ボタン3飛び先ラベル</div>
+    <div class="sel_branch">　キーワード3時の飛び先ラベル</div>
     <input type="text" class="sel_button  sel_branch" name="button_flg_3">
     <input type="text" class="none" name="button_condition_3">
   </div>
-  <div class="sel_button" style="display:inline-flex">
+  <div class="sel_button sel_branch sel_branch_2" style="display:inline-flex">
     <div class="sel_button">ボタン4名称(20字まで)</div>
     <input type="text" class="sel_button" name="button_text_4">
     <div class="sel_button">　ボタン4飛び先ラベル</div>
-    <input type="text" class="sel_button sel_branch_2" name="button_flg_4">
+    <div class="sel_branch_2">　誤答時飛び先ラベル</div>
+    <div class="sel_branch">　その他の時の飛び先ラベル</div>
+    <input type="text" class="sel_button sel_branch sel_branch_2" name="button_flg_4">
     <input type="text" class="none" name="button_condition_4">
   </div>
   <input type="text" class="none" name="target_flg">
