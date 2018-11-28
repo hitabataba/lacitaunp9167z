@@ -20,6 +20,14 @@
 <script>
 $(function() {
   var form_html = $('#scenario_table').html();
+  $('#scenario_table').html("");
+
+/*
+  $('.none').hide();
+  $('.sel_image').hide();
+  $('.sel_button').hide();
+  $('.sel_text').show();
+*/
 
 $.ajax({
   type: "POST",
@@ -51,13 +59,13 @@ $.ajax({
   
 });
 
+  addRow(form_html);
+
+
+
   $('button[name="addform"]').click(function() {
     addRow(form_html);
   })
-  $('.none').hide();
-  $('.sel_image').hide();
-  $('.sel_button').hide();
-  $('.sel_text').show();
 
   $(document).on('change', 'select[name="format"]', function(){
 
