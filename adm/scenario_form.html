@@ -28,13 +28,17 @@ $.ajax({
   dataType: "json",
   //Ajax通信が成功した場合に呼び出されるメソッド
   success: function(json){
-    console.log(json);
 //成功した場合はjson構造体の配列に格納される
-    $.each(json, function(property, value) {
+    $.each(json, function(property, json_c) {
       addRow(form_html);
+      console.log(json_c);
+      $.each(json_c, function(prop, value) {
+        $('#scenario_table tr:last[name='+prop+'] ').val(value);
+
+      })
     })
+
     //出力する部分
-    $('#result').html(json);
   },
   //Ajax通信が失敗した場合に呼び出されるメソッド
   error: function(XMLHttpRequest, textStatus, errorThrown){
