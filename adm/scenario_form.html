@@ -32,8 +32,8 @@ $.ajax({
     $.each(json, function(property, json_c) {
       addRow(form_html);
       $.each(json_c, function(prop, value) {
-      console.log('#scenario_table tr:last[name='+prop+'] '+ "|" + value );
-        $('#scenario_table tr:last[name='+prop+'] ').val(value);
+      console.log('#scenario_table tr:last[name="'+prop+'"] '+ "|" + value );
+        $('#scenario_table tr:last[name="'+prop+'"] ').val(value);
 
       })
     })
