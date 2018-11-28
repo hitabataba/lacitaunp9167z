@@ -1,7 +1,7 @@
 <?php
 header('Content-type: application/json; charset=utf-8');
 
-
+setlocale(LC_ALL, 'ja_JP.UTF-8');
 define('TABLE_NAME_PROGRESS', 'user_progress');
 define('TABLE_NAME_SCENARIO', 'scenario_data');
 
