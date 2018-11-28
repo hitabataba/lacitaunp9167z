@@ -21,6 +21,29 @@
 $(function() {
   var form_html = $('#scenario_table').html();
 
+$.ajax({
+  type: "POST",
+  url: "ajax_getscenario.php",
+  data: data,
+  dataType: "json",
+  //Ajax通信が成功した場合に呼び出されるメソッド
+  success: function(json){
+    console.log(json);
+//成功した場合はjson構造体の配列に格納される
+
+    //出力する部分
+    $('#result').html(json);
+  },
+  //Ajax通信が失敗した場合に呼び出されるメソッド
+  error: function(XMLHttpRequest, textStatus, errorThrown){
+    alert('Error : ' + errorThrown);
+    $("#XMLHttpRequest").html("XMLHttpRequest : " + XMLHttpRequest.status);
+    $("#textStatus").html("textStatus : " + textStatus);
+    $("#errorThrown").html("errorThrown : " + errorThrown);
+  }
+  
+});
+
   $('button[name="addform"]').click(function() {
     var newRowno = parseInt($("#scenario_table:last tr").attr('rowno'));
     $("#scenario_table:last").append(form_html);
