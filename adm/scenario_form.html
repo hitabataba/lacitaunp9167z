@@ -32,9 +32,11 @@ $.ajax({
     $.each(json, function(property, json_c) {
       addRow(form_html);
       $.each(json_c, function(prop, value) {
-      console.log('#scenario_table tr:last[name="'+prop+'"] '+ "|" + value );
-        $('#scenario_table tr:last input[name="'+prop+'"] ').val(value);
-
+	if(prop == "format"){
+          $('#scenario_table tr:last select[name="format"] ').val(value);
+        }else{
+          $('#scenario_table tr:last input[name="'+prop+'"] ').val(value);
+        }
       })
     })
 
@@ -56,41 +58,42 @@ $.ajax({
   $('.none').hide();
   $('.sel_image').hide();
   $('.sel_button').hide();
+  $('.sel_text').show();
 
   $(document).on('change', 'select[name="format"]', function(){
 
 //    var rowno = parseInt($(this).closest('tr').attr('rowno'));
     switch($(this).find('option:selected').val()){
     case 'text':
-      $(this).closest('tr').find('.sel_text').show();
       $(this).closest('tr').find('.sel_image').hide();
       $(this).closest('tr').find('.sel_button').hide();
+      $(this).closest('tr').find('.sel_text').show();
       break;
     case 'image':
       $(this).closest('tr').find('.sel_text').hide();
-      $(this).closest('tr').find('.sel_image').show();
       $(this).closest('tr').find('.sel_button').hide();
+      $(this).closest('tr').find('.sel_image').show();
       break;
     case 'button':
-      $(this).closest('tr').find('.sel_text').hide();
       $(this).closest('tr').find('.sel_image').hide();
+      $(this).closest('tr').find('.sel_text').show();
       $(this).closest('tr').find('.sel_button').show();
       break;
     case 'button_q':
-      $(this).closest('tr').find('.sel_text').hide();
       $(this).closest('tr').find('.sel_image').hide();
+      $(this).closest('tr').find('.sel_text').show();
       $(this).closest('tr').find('.sel_button').show();
       break;
     case 'branch_2':
-      $(this).closest('tr').find('.sel_text').hide();
       $(this).closest('tr').find('.sel_image').hide();
       $(this).closest('tr').find('.sel_button').hide();
+      $(this).closest('tr').find('.sel_text').show();
       $(this).closest('tr').find('.sel_branch_2').show();
       break;
     case 'branch':
-      $(this).closest('tr').find('.sel_text').hide();
       $(this).closest('tr').find('.sel_image').hide();
       $(this).closest('tr').find('.sel_button').hide();
+      $(this).closest('tr').find('.sel_text').show();
       $(this).closest('tr').find('.sel_branch').show();
       break;
     default:
@@ -124,6 +127,12 @@ td.tbl_center {
 }
 td.tbl_tail {
   width:100px;
+}
+td div {
+  margin:3px;
+}
+input, select{
+  padding:2px;
 }
 input[name="label"]{
   width: 10em;
@@ -159,8 +168,8 @@ input[name="image"]{
   </select>
 </td>
 <td class="tbl_center">
-  <div class="sel_text">吹き出しテキスト</div>
-  <input type="text" class="sel_text" name="text">
+  <div class="sel_text sel_button">吹き出しテキスト</div>
+  <input type="text" class="sel_text sel_button" name="text">
   <div class="sel_image">画像ファイル名</div>
   <input type="text" class="sel_image" name="file_name">
   <input type="text" class="none" name="file_property">
