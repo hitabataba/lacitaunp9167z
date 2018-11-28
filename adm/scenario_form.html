@@ -70,6 +70,7 @@ $.ajax({
   $(document).on('change', 'select[name="format"]', function(){
 
 //    var rowno = parseInt($(this).closest('tr').attr('rowno'));
+/*
     switch($(this).find('option:selected').val()){
     case 'text':
       $(this).closest('tr').find('.sel_image').hide();
@@ -81,13 +82,11 @@ $.ajax({
       $(this).closest('tr').find('.sel_button').hide();
       $(this).closest('tr').find('.sel_image').show();
       break;
-/*
     case 'button':
       $(this).closest('tr').find('.sel_image').hide();
       $(this).closest('tr').find('.sel_text').show();
       $(this).closest('tr').find('.sel_button').show();
       break;
-*/
     case 'button_q':
       $(this).closest('tr').find('.sel_image').hide();
       $(this).closest('tr').find('.sel_text').show();
@@ -108,6 +107,7 @@ $.ajax({
     default:
       break;
     }
+*/
   })
 })
 
