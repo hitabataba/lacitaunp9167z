@@ -32,10 +32,9 @@ $.ajax({
     $.each(json, function(property, json_c) {
       addRow(form_html);
       $.each(json_c, function(prop, value) {
+        $('#scenario_table tr:last input[name="'+prop+'"] ').val(value);
 	if(prop == "format"){
           $('#scenario_table tr:last select[name="format"] ').val(value);
-        }else{
-          $('#scenario_table tr:last input[name="'+prop+'"] ').val(value);
         }
       })
     })
