@@ -30,7 +30,9 @@ $.ajax({
   success: function(json){
     console.log(json);
 //成功した場合はjson構造体の配列に格納される
-
+    $.each(json, function(property, value) {
+      addRow(form_html);
+    }
     //出力する部分
     $('#result').html(json);
   },
@@ -45,12 +47,7 @@ $.ajax({
 });
 
   $('button[name="addform"]').click(function() {
-    var newRowno = parseInt($("#scenario_table:last tr").attr('rowno'));
-    $("#scenario_table:last").append(form_html);
-    $("#scenario_table tr:last").attr('rowno',newRowno+1);
-    $('#scenario_table tr:last .none').hide();
-    $('#scenario_table tr:last .sel_image').hide();
-    $('#scenario_table tr:last .sel_button').hide();
+    addRow(form_html);
   })
   $('.none').hide();
   $('.sel_image').hide();
@@ -97,6 +94,15 @@ $.ajax({
     }
   })
 })
+
+function addRow (form_html) {
+    var newRowno = parseInt($("#scenario_table:last tr").attr('rowno'));
+    $("#scenario_table:last").append(form_html);
+    $("#scenario_table tr:last").attr('rowno',newRowno+1);
+    $('#scenario_table tr:last .none').hide();
+    $('#scenario_table tr:last .sel_image').hide();
+    $('#scenario_table tr:last .sel_button').hide();
+}
 
 </script>
 
