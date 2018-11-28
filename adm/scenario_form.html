@@ -24,7 +24,7 @@ $(function() {
 $.ajax({
   type: "POST",
   url: "ajax_getscenario.php",
-  data: data,
+//  data: data,
   dataType: "json",
   //Ajax通信が成功した場合に呼び出されるメソッド
   success: function(json){
@@ -109,7 +109,7 @@ td.tbl_head {
   width:350px;
 }
 td.tbl_center {
-  width:800px;
+  width:820px;
 }
 td.tbl_tail {
   width:100px;
@@ -194,6 +194,8 @@ input[name="image"]{
 </table>
 
 <button type="button" name="addform">行追加</button>
+
+<div id="#result"></div>
 
   </body>
 </html>
