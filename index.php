@@ -52,6 +52,7 @@ $messages = array();
 
 $events = array();
 //$events[0]=\LINE\LINEBot\Event\PostbackEvent::__set_state(array(
+/*
 $events[0]=array(
   'event' =>array(
     'type' => 'postback',
@@ -68,7 +69,7 @@ $events[0]=array(
      ),
   ),
 );
-
+*/
 
 if(!$events){
   error_log('No Events Access');
