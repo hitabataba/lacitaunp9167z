@@ -26,6 +26,8 @@ $(function() {
   $('.sel_button').hide();
   $('.sel_text').show();
 
+  var next_order_no = 1;
+
 $.ajax({
   type: "POST",
   url: "ajax_getscenario.php",
@@ -40,8 +42,15 @@ $.ajax({
 	if(prop == "format"){
           $('#scenario_table tr:last select[name="format"] ').val(value).toggleRow();
         }
+	if(prop == "label"){
+          $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').prop("label",value);
+        }
+	if(prop == "no"){
+          $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').prop("rowno",value);
+        }
 	if(prop == "order_no"){
           $('#scenario_table tr:last td.tbl_tail span.order_no').text(value);
+          next_order_no = value;
         }
       })
       addRow(form_html);
@@ -59,9 +68,13 @@ $.ajax({
   
 });
 
-
+//行追加ボタン
   $('button[name="addform"]').click(function() {
     addRow(form_html);
+  })
+//
+  $('.tbl_tail button[name="updaterow"]').click(function() {
+    alert();
   })
 
   $(document).on('change', 'select[name="format"]', function(){
@@ -235,7 +248,7 @@ input[name="image"]{
   <input type="text" class="none" name="add_flg">
 </td>
 <td class="tbl_tail">
-  <input type="button" value="登録">
+  <input type="button" name="updaterow" value="登録" label="" rowno="">
   <span class="order_no"></span>
 </td>
 </form>
