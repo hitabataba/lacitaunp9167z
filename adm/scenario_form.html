@@ -41,7 +41,7 @@ $.ajax({
           $('#scenario_table tr:last select[name="format"] ').val(value).toggleRow();
         }
 	if(prop == "order_no"){
-          $('#scenario_table tr:last span.order_no').val(value);
+          $('#scenario_table tr:last td.tbl_tail span.order_no').text(value);
         }
       })
       addRow(form_html);
