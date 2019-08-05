@@ -44,6 +44,8 @@ $.ajax({
         }
 	if(prop == "label"){
           $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').prop("label",value);
+console.log(value);
+console.log( $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').prop("label"));
         }
 	if(prop == "no"){
           $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').prop("rowno",value);
