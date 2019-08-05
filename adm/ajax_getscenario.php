@@ -22,7 +22,7 @@ try{
 $export_sql =
 "SELECT * FROM ".TABLE_NAME_SCENARIO ." as SC".
 " INNER JOIN ".TABLE_NAME_SCENARIO_ORDER ." as SC_ORDER".
-" ON SC.label = SC_ORDER.label"
+" ON SC.label = SC_ORDER.label".
 " ORDER BY SC_ORDER.order_no";
 
 // query database
