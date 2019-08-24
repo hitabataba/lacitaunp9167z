@@ -168,7 +168,7 @@ td div {
 input, select{
   padding:2px;
 }
-input[name="label"]{
+input[name="label"],input[name="button_flg_1"],input[name="button_flg_2"],input[name="button_flg_3"],input[name="button_flg_4"]{
   width: 10em;
 }
 input[name="no"]{
