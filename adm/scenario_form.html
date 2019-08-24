@@ -73,7 +73,7 @@ $.ajax({
 
 //行更新ボタン
 $(document).on('click',$('button[name="updaterow"]'),function(){
-  alert($(this).parents('.data_tr').html());
+  alert($(this).html());
   var row_id = parseInt($(this).parents('.data_tr').find('span.id').text(),10);
 
   $.ajax({
