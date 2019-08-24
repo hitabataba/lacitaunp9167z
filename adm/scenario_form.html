@@ -44,7 +44,6 @@ $.ajax({
         }
 	if(prop == "label"){
           $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').prop("label",value);
-console.log( $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').prop("label"));
         }
 	if(prop == "no"){
           $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').prop("rowno",value);
@@ -73,7 +72,7 @@ console.log( $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').p
 });
 
 //行更新ボタン
-$('button[name="updaterow"]').click(function(){
+$(document).on('click',$('button[name="updaterow"]'),function(){
   var row_id = $(this).parents('.data_tr').find('.id');
 
   $.ajax({
