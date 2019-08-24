@@ -245,8 +245,10 @@ input[name="image"]{
     <input type="text" class="sel_button sel_branch sel_branch_2" name="button_flg_4">
     <input type="text" class="none" name="button_condition_4">
   </div>
-  <input type="text" class="none" name="target_flg">
-  <input type="text" class="none" name="add_flg">
+</td>
+<td class="tbl_flg">
+  <input type="text" name="target_flg">
+  <input type="text" name="add_flg">
 </td>
 <td class="tbl_tail">
   <input type="button" name="updaterow" value="登録" label="" rowno="">
