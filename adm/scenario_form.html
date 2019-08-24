@@ -53,6 +53,9 @@ console.log( $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').p
           $('#scenario_table tr:last td.tbl_tail span.order_no').text(value);
           next_order_no = value;
         }
+	if(prop == "id"){
+          $('#scenario_table tr:last td.tbl_tail span.id').text(value);
+        }
       })
       addRow(form_html);
     })
@@ -70,7 +73,9 @@ console.log( $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').p
 });
 
 //行更新ボタン
-$('input[name="updaterow"]').click(function(){
+$('button[name="updaterow"]').click(function(){
+  var row_id = $(this).parents('.data_tr').find('.id');
+
   $.ajax({
     type: "POST",
     url: "ajax_updatescenario.php.php",
@@ -81,16 +86,14 @@ $('input[name="updaterow"]').click(function(){
     }
   })
   alert(json);
+  alert(row_id);
 });
 
 //行追加ボタン
   $('button[name="addform"]').click(function() {
     addRow(form_html);
   })
-//
-  $('.tbl_tail button[name="updaterow"]').click(function() {
-    alert();
-  })
+
 
   $(document).on('change', 'select[name="format"]', function(){
     $(this).toggleRow();
@@ -205,7 +208,7 @@ input[name="target_flg"],input[name="add_flg"],input[name="button_condition_1"],
   <body>
 
 <table id="scenario_table">
-<tr rowno="1">
+<tr class="data_tr" rowno="1">
 <form>
 <td class="tbl_head">
   <input type="text" name="label" placeholder="ラベル">
@@ -276,6 +279,7 @@ input[name="target_flg"],input[name="add_flg"],input[name="button_condition_1"],
 <td class="tbl_tail">
   <input type="button" name="updaterow" value="登録" label="" rowno="">
   <span class="order_no"></span>
+  <span class="id"></span>
 </td>
 </form>
 </tr>
