@@ -69,6 +69,20 @@ console.log( $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').p
   
 });
 
+//行更新ボタン
+$('input[name="updaterow"]').click(function(){
+  $.ajax({
+    type: "POST",
+    url: "ajax_updatescenario.php.php",
+//    data: data,
+    dataType: "json",
+    success: function(json){
+
+    }
+  })
+  alert(json);
+});
+
 //行追加ボタン
   $('button[name="addform"]').click(function() {
     addRow(form_html);
