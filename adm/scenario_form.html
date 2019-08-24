@@ -154,7 +154,7 @@ console.log( $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').p
   padding:5px;
 }
 td.tbl_head {
-  width:350px;
+  width:200px;
 }
 td.tbl_center {
   width:820px;
@@ -192,6 +192,7 @@ input[name="image"]{
 <td class="tbl_head">
   <input type="text" name="label" placeholder="ラベル">
   <input type="text" name="no" placeholder="">
+  <br>
   <select name="format">
     <option value="text">テキスト</option>
     <option value="image">画像</option>
@@ -216,6 +217,7 @@ input[name="image"]{
     <div class="sel_branch_2">　正解時飛び先ラベル</div>
     <div class="sel_branch">　キーワード1時の飛び先ラベル</div>
     <input type="text" class="sel_button sel_branch sel_branch_2" name="button_flg_1">
+    <div class="sel_button sel_branch sel_branch_2">　表示条件</div>
     <input type="text" class="sel_button sel_branch sel_branch_2" name="button_condition_1">
   </div>
   <div class="sel_button sel_branch" style="display:inline-flex">
@@ -225,6 +227,7 @@ input[name="image"]{
     <div class="sel_button">　ボタン2飛び先ラベル</div>
     <div class="sel_branch">　キーワード2時の飛び先ラベル</div>
     <input type="text" class="sel_button  sel_branch" name="button_flg_2">
+    <div class="sel_button sel_branch sel_branch_2">　表示条件</div>
     <input type="text" class="sel_button sel_branch sel_branch_2" name="button_condition_2">
   </div>
   <div class="sel_button sel_branch" style="display:inline-flex">
@@ -234,6 +237,7 @@ input[name="image"]{
     <div class="sel_button">　ボタン3飛び先ラベル</div>
     <div class="sel_branch">　キーワード3時の飛び先ラベル</div>
     <input type="text" class="sel_button  sel_branch" name="button_flg_3">
+    <div class="sel_button sel_branch sel_branch_2">　表示条件</div>
     <input type="text" class="sel_button sel_branch sel_branch_2" name="button_condition_3">
   </div>
   <div class="sel_button sel_branch sel_branch_2" style="display:inline-flex">
@@ -242,12 +246,12 @@ input[name="image"]{
     <div class="sel_button">　ボタン4飛び先ラベル</div>
     <div class="sel_branch_2">　誤答時飛び先ラベル</div>
     <div class="sel_branch">　その他の時の飛び先ラベル</div>
-    <input type="text" class="sel_button sel_branch sel_branch_2" name="button_flg_4">
+    <div class="sel_button sel_branch sel_branch_2">　表示条件</div>
     <input type="text" class="sel_button sel_branch sel_branch_2" name="button_condition_4">
   </div>
 </td>
 <td class="tbl_flg">
-  表示条件<input type="text" name="target_flg">
+  表示条件<input type="text" name="target_flg"><br>
   付与フラグ<input type="text" name="add_flg">
 </td>
 <td class="tbl_tail">
