@@ -154,7 +154,7 @@ console.log( $('#scenario_table tr:last td.tbl_tail button[name="updaterow"]').p
   padding:5px;
 }
 td.tbl_head {
-  width:150px;
+  width:200px;
 }
 td.tbl_center {
   width:820px;
@@ -179,6 +179,9 @@ input[name="text"]{
 }
 input[name="image"]{
   width: 30em;
+}
+input[name="target_flg"],input[name="add_flg"],input[name="button_condition_1"],input[name="button_condition_2"],input[name="button_condition_3"],input[name="button_condition_4"]{
+  width: 15em;
 }
 </style>
 
